@@ -67,7 +67,11 @@ def get_db():
 
 def init_db():
     """Create tables if they don't exist (runs on startup)."""
-    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        conn = pymysql.connect(**DB_CONFIG)
+    except Exception as e:
+        log.error(f'init_db: cannot connect to DB at startup: {e}')
+        return
     try:
         with conn.cursor() as cur:
             cur.execute("""
