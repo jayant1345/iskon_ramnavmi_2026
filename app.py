@@ -34,34 +34,16 @@ log = logging.getLogger(__name__)
 # ============================================================
 #  DATABASE CONFIG — auto-detects Railway or local environment
 # ============================================================
-_mysql_url = os.environ.get('MYSQL_URL') or os.environ.get('MYSQL_PUBLIC_URL')
-if _mysql_url:
-    _p = urlparse(_mysql_url)
-    try:
-        _port = int(_p.port or 3306)
-    except (ValueError, TypeError):
-        _port = 3306
-    DB_CONFIG = {
-        'host':     _p.hostname,
-        'port':     _port,
-        'user':     _p.username,
-        'password': _p.password,
-        'db':       _p.path.lstrip('/'),
-        'charset':  'utf8mb4',
-        'cursorclass': pymysql.cursors.DictCursor,
-        'autocommit': True,
-    }
-else:
-    DB_CONFIG = {
-        'host':     os.environ.get('MYSQLHOST', 'localhost'),
-        'port':     int(os.environ.get('MYSQLPORT') or 3306),
-        'user':     os.environ.get('MYSQLUSER', 'root'),
-        'password': os.environ.get('MYSQLPASSWORD', 'root'),
-        'db':       os.environ.get('MYSQL_DATABASE', 'iskcon_ramnavmi_db'),
-        'charset':  'utf8mb4',
-        'cursorclass': pymysql.cursors.DictCursor,
-        'autocommit': True,
-    }
+DB_CONFIG = {
+    'host':     os.environ.get('MYSQLHOST', 'localhost'),
+    'port':     int(os.environ.get('MYSQLPORT') or 3306),
+    'user':     os.environ.get('MYSQLUSER', 'root'),
+    'password': os.environ.get('MYSQLPASSWORD', 'root'),
+    'db':       os.environ.get('MYSQL_DATABASE', 'iskcon_ramnavmi_db'),
+    'charset':  'utf8mb4',
+    'cursorclass': pymysql.cursors.DictCursor,
+    'autocommit': True,
+}
 # ============================================================
 
 def get_db():
