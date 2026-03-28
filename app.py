@@ -37,7 +37,7 @@ log = logging.getLogger(__name__)
 # ============================================================
 DB_CONFIG = {
     'host':     os.environ.get('MYSQLHOST', 'localhost'),
-    'port':     int(os.environ.get('MYSQLPORT', 3306)),
+    'port':     int(os.environ.get('MYSQLPORT') or 3306),
     'user':     os.environ.get('MYSQLUSER', 'root'),
     'password': os.environ.get('MYSQLPASSWORD', 'root'),
     'db':       os.environ.get('MYSQL_DATABASE', 'iskcon_ramnavmi_db'),
