@@ -37,9 +37,13 @@ log = logging.getLogger(__name__)
 _mysql_url = os.environ.get('MYSQL_URL') or os.environ.get('MYSQL_PUBLIC_URL')
 if _mysql_url:
     _p = urlparse(_mysql_url)
+    try:
+        _port = int(_p.port or 3306)
+    except (ValueError, TypeError):
+        _port = 3306
     DB_CONFIG = {
         'host':     _p.hostname,
-        'port':     _p.port or 3306,
+        'port':     _port,
         'user':     _p.username,
         'password': _p.password,
         'db':       _p.path.lstrip('/'),
