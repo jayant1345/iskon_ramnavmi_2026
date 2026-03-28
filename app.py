@@ -455,7 +455,7 @@ def export_csv():
 def clear_all():
     """Clear all data (admin only — use with caution!)."""
     secret = request.get_json().get('secret', '')
-    if secret != 'ISKCON_CLEAR_CONFIRM_2025':   # simple guard
+    if secret != 'ISKCON_CLEAR_CONFIRM_2026':   # simple guard
         return jsonify({'error': 'Invalid confirmation secret'}), 403
     try:
         db_execute("DELETE FROM attendance")
@@ -480,7 +480,7 @@ if __name__ == '__main__':
         lan_ip = '127.0.0.1'
 
     print('\n' + '='*55)
-    print('  🕉  ISKCON SOCIETY — RAM NAVMI CELEBRATION 2025')
+    print('  🕉  ISKCON SOCIETY — RAM NAVMI CELEBRATION 2026')
     print('='*55)
     print(f'  Local:   http://localhost:5000')
     print(f'  Network: http://{lan_ip}:5000')
