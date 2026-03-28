@@ -31,14 +31,16 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 # ============================================================
-#  DATABASE CONFIG — Edit these values
+#  DATABASE CONFIG — reads from environment variables
+#  Local:   set these in your shell or .env
+#  Railway: set automatically from MySQL service variables
 # ============================================================
 DB_CONFIG = {
-    'host':     'localhost',
-    'port':     3306,
-    'user':     'root',          # ← your MySQL username
-    'password': 'root',  # ← your MySQL password
-    'db':       'iskcon_ramnavmi_db',
+    'host':     os.environ.get('MYSQLHOST', 'localhost'),
+    'port':     int(os.environ.get('MYSQLPORT', 3306)),
+    'user':     os.environ.get('MYSQLUSER', 'root'),
+    'password': os.environ.get('MYSQLPASSWORD', 'root'),
+    'db':       os.environ.get('MYSQL_DATABASE', 'iskcon_ramnavmi_db'),
     'charset':  'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor,
     'autocommit': True,
@@ -48,6 +50,56 @@ DB_CONFIG = {
 def get_db():
     """Open a fresh DB connection per request."""
     return pymysql.connect(**DB_CONFIG)
+
+
+def init_db():
+    """Create tables if they don't exist (runs on startup)."""
+    conn = pymysql.connect(**DB_CONFIG)
+    try:
+        with conn.cursor() as cur:
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS registrations (
+                    id      INT AUTO_INCREMENT PRIMARY KEY,
+                    token   VARCHAR(10)  NOT NULL UNIQUE,
+                    name    VARCHAR(150) NOT NULL,
+                    address TEXT         NOT NULL,
+                    mobile  VARCHAR(15)  NOT NULL,
+                    persons INT          NOT NULL DEFAULT 1,
+                    paid    INT          NOT NULL DEFAULT 0,
+                    reg_at  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    INDEX idx_token (token),
+                    INDEX idx_mobile (mobile)
+                ) ENGINE=InnoDB CHARACTER SET utf8mb4
+            """)
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS attendance (
+                    id        INT AUTO_INCREMENT PRIMARY KEY,
+                    token     VARCHAR(10)  NOT NULL UNIQUE,
+                    name      VARCHAR(150) NOT NULL,
+                    persons   INT          NOT NULL DEFAULT 1,
+                    paid      INT          NOT NULL DEFAULT 0,
+                    mobile    VARCHAR(15),
+                    gate_time DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                    FOREIGN KEY (token) REFERENCES registrations(token) ON DELETE CASCADE,
+                    INDEX idx_token (token)
+                ) ENGINE=InnoDB CHARACTER SET utf8mb4
+            """)
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS token_counter (
+                    id      INT PRIMARY KEY DEFAULT 1,
+                    current INT NOT NULL DEFAULT 0
+                ) ENGINE=InnoDB
+            """)
+            cur.execute("INSERT IGNORE INTO token_counter (id, current) VALUES (1, 0)")
+            conn.commit()
+        log.info('Database tables ready.')
+    except Exception as e:
+        log.error(f'init_db error: {e}')
+    finally:
+        conn.close()
+
+
+init_db()
 
 
 def db_query(sql, args=None, fetch='all'):
