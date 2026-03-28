@@ -338,12 +338,35 @@ def gate_scan():
             gate_time = existing['gate_time']
             if hasattr(gate_time, 'strftime'):
                 gate_time = gate_time.strftime('%H:%M')
+            # Check if additional members are being added
+            reg = db_query("SELECT * FROM registrations WHERE token = %s", (token,), fetch='one')
+            registered_total = reg['persons'] if reg else existing['persons']
+            already_in = existing['persons']
+            remaining = max(0, registered_total - already_in)
+            if persons > 0 and data.get('add_more'):
+                # Add more members to existing attendance
+                new_total = already_in + persons
+                db_execute(
+                    "UPDATE attendance SET persons = %s WHERE token = %s",
+                    (new_total, token)
+                )
+                log.info(f'Added {persons} more members for token={token}, total={new_total}')
+                return jsonify({
+                    'status': 'success',
+                    'message': f'{persons} more member(s) added. Total: {new_total}',
+                    'token': token,
+                    'name': name,
+                    'persons': new_total,
+                    'gate_time': gate_time,
+                }), 200
             return jsonify({
                 'status': 'duplicate',
                 'message': f'Already entered at {gate_time}',
                 'token': token,
                 'name': name,
-                'persons': existing['persons'],
+                'persons': already_in,
+                'registered': registered_total,
+                'remaining': remaining,
                 'gate_time': gate_time,
             }), 200
 

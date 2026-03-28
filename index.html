@@ -977,23 +977,25 @@ async function searchGateEntry() {
       return;
     }
 
-    if (matches.length === 1) {
-      res.style.display = 'none';
-      input.value = '';
-      const r = matches[0];
-      await processGate(`PASS:${r.token}|N:${r.name}|P:${r.persons}|A:${r.paid}|M:${r.mobile}`);
-      return;
-    }
-
-    // Multiple matches — show list to pick from
     res.style.display = 'none';
     searchRes.style.display = 'block';
-    searchRes.innerHTML = `<div style="font-size:13px;color:var(--mt);margin-bottom:8px;">Multiple matches — tap the correct family:</div>` +
+    const label = matches.length === 1 ? 'Found — confirm entry:' : 'Multiple matches — tap the correct family:';
+    searchRes.innerHTML = `<div style="font-size:13px;color:#555;margin-bottom:8px;">${label}</div>` +
       matches.map(r => `
-        <div onclick="selectGateEntry('${r.token}','${r.name.replace(/'/g,"\\'")}',${r.persons},${r.paid},'${r.mobile}')"
-          style="background:rgba(255,255,255,.07);border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;border:1px solid rgba(255,255,255,.1);">
-          <div style="font-weight:700;color:#fff;font-size:15px;">#${r.token} — ${r.name}</div>
-          <div style="font-size:12px;color:var(--mt);">📱 ${r.mobile} · 👥 ${r.persons} members · ₹${r.paid} ${r.attended ? '· <span style="color:#4CAF50;">✅ Already Attended</span>' : ''}</div>
+        <div style="background:#fff;border-radius:10px;padding:12px;margin-bottom:8px;border:2px solid ${r.attended ? '#FF9800' : '#4CAF50'};">
+          <div style="font-weight:700;color:#1A0800;font-size:15px;">#${r.token} — ${r.name}</div>
+          <div style="font-size:12px;color:#555;margin-bottom:8px;">📱 ${r.mobile} · 👥 ${r.persons} registered · ₹${r.paid}
+            ${r.attended ? `<span style="color:#FF9800;font-weight:700;"> · ⚠️ Already entered</span>` : ''}
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+            <span style="font-size:13px;color:#333;">Members entering now:</span>
+            <input type="number" id="pcount_${r.token}" min="1" max="${r.persons}" value="${r.persons}"
+              style="width:70px;padding:6px;font-size:16px;font-weight:700;text-align:center;border-radius:8px;border:2px solid #E8620A;color:#1A0800;background:#fff;">
+            <button onclick="selectGateEntry('${r.token}','${r.name.replace(/'/g,"\\'")}',document.getElementById('pcount_${r.token}').value,${r.paid},'${r.mobile}',${r.attended ? 'true' : 'false'})"
+              style="background:${r.attended ? '#FF9800' : '#4CAF50'};color:#fff;border:none;padding:8px 16px;border-radius:8px;font-weight:700;cursor:pointer;font-size:14px;">
+              ${r.attended ? '➕ Add More Members' : '✅ Mark Entry'}
+            </button>
+          </div>
         </div>`).join('');
   } catch(e) {
     res.className = 'ar rer';
@@ -1001,10 +1003,38 @@ async function searchGateEntry() {
   }
 }
 
-async function selectGateEntry(token, name, persons, paid, mobile) {
+async function selectGateEntry(token, name, persons, paid, mobile, addMore) {
   document.getElementById('gate-search-results').style.display = 'none';
   document.getElementById('gmt').value = '';
-  await processGate(`PASS:${token}|N:${name}|P:${persons}|A:${paid}|M:${mobile}`);
+  const p = parseInt(persons) || 1;
+  if (addMore) {
+    const res = document.getElementById('att-res');
+    res.className = 'ar';
+    res.innerHTML = `<span class="ri">⏳</span><div class="rn2">Adding ${p} more member(s)...</div>`;
+    res.style.display = 'block';
+    try {
+      const resp = await apiFetch('/api/gate/scan', {
+        method: 'POST',
+        body: JSON.stringify({ token, name, persons: p, paid, mobile, add_more: true }),
+      });
+      if (resp.status === 'success') {
+        res.className = 'ar rok';
+        res.innerHTML = `<span class="ri">✅</span><div class="rn2">${name}</div>
+          <div style="font-family:'Crimson Pro',serif;font-size:52px;font-weight:700;color:var(--sf);line-height:1;margin:2px 0;">#${token}</div>
+          <div class="pr" style="margin:12px auto;"><div class="pr-n">${resp.persons}</div><div class="pr-l">Total Members Now</div></div>
+          <div style="font-size:14px;font-weight:700;color:var(--ok);">➕ ${p} More Member(s) Added</div>`;
+        loadGateStats();
+      } else {
+        res.className = 'ar rer';
+        res.innerHTML = `<span class="ri">❌</span><div class="rn2">Error</div><div class="rd">${resp.message || resp.error}</div>`;
+      }
+    } catch(e) {
+      res.className = 'ar rer';
+      res.innerHTML = `<span class="ri">❌</span><div class="rn2">Error</div><div class="rd">${e.message}</div>`;
+    }
+    return;
+  }
+  await processGate(`PASS:${token}|N:${name}|P:${p}|A:${paid}|M:${mobile}`);
 }
 
 async function processGate(data) {
