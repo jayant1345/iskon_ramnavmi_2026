@@ -37,7 +37,7 @@ DB_CONFIG = {
     'host':     'localhost',
     'port':     3306,
     'user':     'root',          # ← your MySQL username
-    'password': 'yourpassword',  # ← your MySQL password
+    'password': 'root',  # ← your MySQL password
     'db':       'iskcon_ramnavmi_db',
     'charset':  'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor,
@@ -344,7 +344,7 @@ def export_csv():
                 r.reg_at,
                 IF(a.token IS NOT NULL,'Yes','No') AS attended,
                 COALESCE(a.persons, 0)             AS members_counted,
-                COALESCE(DATE_FORMAT(a.gate_time,'%d/%m/%Y %H:%i'), '') AS gate_time
+                COALESCE(DATE_FORMAT(a.gate_time,'%%d/%%m/%%Y %%H:%%i'), '') AS gate_time
             FROM registrations r
             LEFT JOIN attendance a ON r.token = a.token
             ORDER BY r.id ASC

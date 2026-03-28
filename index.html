@@ -337,6 +337,7 @@ canvas{display:none;}
       </div>
       <div id="csumm" style="text-align:left;margin-bottom:14px;"></div>
       <div style="background:var(--sfp);border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;color:var(--mt);">🙏 Hare Krishna! We look forward to welcoming your family at Ram Navmi Celebration.</div>
+      <button class="btn" id="wa-pass-btn" onclick="sharePassToWhatsApp()" style="background:#25D366;color:#fff;border:none;font-weight:700;margin-bottom:10px;width:100%;font-size:15px;">📲 Send Entry Pass to WhatsApp</button>
       <button class="btn bo" onclick="resetReg()">Register Another Devotee Family</button>
     </div>
   </div>
@@ -424,8 +425,8 @@ canvas{display:none;}
 // Replace with your PC's LAN IP address
 // Run: ipconfig (Windows) or ip addr (Linux) to find it
 // Example: 'http://192.168.1.105:5000'
-const API = 'http://192.168.1.100:5000';   // ← CHANGE THIS IP
-const UPI_ID = 'yourname@upi';             // ← CHANGE YOUR UPI ID
+const API = 'http://192.168.1.8:8012';   // ← CHANGE THIS IP
+const UPI_ID = '9426732587@upi';             // ← CHANGE YOUR UPI ID
 
 // ── INVITATION QR ──
 // The QR code encodes a real URL so any phone camera / Google Lens
@@ -819,6 +820,9 @@ async function confirmReg() {
       text: passData, width: 200, height: 200,
       colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H,
     });
+    // Store for WhatsApp share
+    window._lastPass = { token, name, pers, amt, mob };
+
     goStep(4);
   } catch (e) {
     alert('Error saving to database: ' + e.message + '\n\nMake sure Flask server is running.');
@@ -826,6 +830,47 @@ async function confirmReg() {
     btn.innerHTML = '✅ Payment Done — Get Family Entry Pass';
     btn.disabled = false;
   }
+}
+
+async function sharePassToWhatsApp() {
+  const p = window._lastPass;
+  if (!p) return;
+
+  const btn = document.getElementById('wa-pass-btn');
+  const orig = btn.innerHTML;
+  btn.innerHTML = '⏳ Preparing...';
+  btn.disabled = true;
+
+  const msg = `🙏 *ISKCON Society — Ram Navmi Celebration 2025*\n\n✅ *Family Entry Pass Confirmed!*\n\n👤 Name: ${p.name}\n🎫 Token No: #${p.token}\n👨‍👩‍👧 Members: ${p.pers}\n💰 Paid: ₹${p.amt}\n\n📸 *Show this QR at the gate for entry.*\n\nHare Krishna · Jai Shri Ram 🕉`;
+
+  const canvas = document.querySelector('#cqr canvas');
+
+  // Mobile: try Web Share API to share QR image directly
+  if (canvas && navigator.share && navigator.canShare) {
+    try {
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([blob], `ISKCON_Pass_${p.token}.png`, { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({ files: [file], title: 'ISKCON Ram Navmi Entry Pass', text: msg });
+        btn.innerHTML = '✅ Sent!';
+        setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 2500);
+        return;
+      }
+    } catch (e) { /* fallback below */ }
+  }
+
+  // Fallback: download QR image + open WhatsApp with the devotee's number
+  if (canvas) {
+    const link = document.createElement('a');
+    link.download = `ISKCON_Pass_${p.token}.png`;
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }
+  const waNum = p.mob.replace(/\D/g, '');
+  const waUrl = `https://wa.me/91${waNum}?text=${encodeURIComponent(msg)}`;
+  window.open(waUrl, '_blank');
+  btn.innerHTML = '✅ WhatsApp Opened!';
+  setTimeout(() => { btn.innerHTML = orig; btn.disabled = false; }, 3000);
 }
 
 function resetReg() {
