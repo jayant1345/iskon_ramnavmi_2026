@@ -1,4 +1,6 @@
-# ISKCON Society — Ram Navmi Celebration 2025
+# ISKCON Society — Ram Navmi Celebration 20xx
+
+
 ## Guest Registration & Attendance System
 ### MySQL + Flask + HTML | Family-wise Token & Gate Entry
 
