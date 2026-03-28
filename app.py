@@ -163,11 +163,11 @@ def ping():
 def get_stats():
     try:
         reg_row = db_query(
-            "SELECT COUNT(*) AS families, COALESCE(SUM(persons),0) AS persons FROM registrations",
+            "SELECT COUNT(*) AS families, COALESCE(SUM(persons),0) AS persons, COALESCE(SUM(paid),0) AS collection FROM registrations",
             fetch='one'
         )
         att_row = db_query(
-            "SELECT COUNT(*) AS families, COALESCE(SUM(persons),0) AS persons, COALESCE(SUM(paid),0) AS collection FROM attendance",
+            "SELECT COUNT(*) AS families, COALESCE(SUM(persons),0) AS persons FROM attendance",
             fetch='one'
         )
         return jsonify({
@@ -175,7 +175,7 @@ def get_stats():
             'registered_persons':  int(reg_row['persons']),
             'attended_families':   att_row['families'],
             'attended_persons':    int(att_row['persons']),
-            'collection':          int(att_row['collection']),
+            'collection':          int(reg_row['collection']),
             'pending_families':    max(0, reg_row['families'] - att_row['families']),
         })
     except Exception as e:
