@@ -364,6 +364,15 @@ canvas{display:none;}
     <button class="btn bp" onclick="startGateCam()" id="gsb" style="max-width:320px;margin:0 auto 10px;">📷 Start Gate Scanner</button>
     <button class="btn bo" onclick="stopGateCam()" id="gstb" style="max-width:320px;margin:0 auto;display:none;">⏹ Stop Scanner</button>
   </div>
+  <div class="card" style="text-align:center;">
+    <div class="ct" style="justify-content:center;">🔍 Manual Gate Entry</div>
+    <div style="font-size:13px;color:var(--mt);margin-bottom:12px;">Search by Token No., Name, or Mobile Number</div>
+    <div style="display:flex;gap:10px;justify-content:center;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
+      <input id="gmt" type="text" placeholder="Token / Name / Mobile" style="width:220px;padding:12px;font-size:16px;font-weight:700;text-align:center;border-radius:10px;border:2px solid var(--sf);background:rgba(255,255,255,.08);color:#fff;outline:none;" onkeydown="if(event.key==='Enter')searchGateEntry()">
+      <button class="btn bg" onclick="searchGateEntry()" style="width:auto;padding:12px 24px;font-size:16px;">🔍 Search</button>
+    </div>
+    <div id="gate-search-results" style="display:none;text-align:left;margin-top:8px;"></div>
+  </div>
   <div class="card">
     <div class="ct">📋 Attendance Log <span style="font-size:12px;color:var(--mt);margin-left:auto;font-weight:400;cursor:pointer;" onclick="loadAttLog()">↻ Refresh</span></div>
     <div id="att-log"><div style="text-align:center;padding:18px;color:var(--mt);font-size:14px;">No entries yet</div></div>
@@ -938,6 +947,64 @@ function stopGateCam() {
   document.getElementById('gv').style.display = 'none'; document.getElementById('gph').style.display = 'flex';
   document.getElementById('gc').style.display = 'none'; document.getElementById('gb').style.display = 'none';
   document.getElementById('gsb').style.display = 'flex'; document.getElementById('gstb').style.display = 'none';
+}
+
+async function searchGateEntry() {
+  const input = document.getElementById('gmt');
+  const query = input.value.trim();
+  if (!query) { alert('Enter token number, name, or mobile.'); return; }
+
+  const res = document.getElementById('att-res');
+  const searchRes = document.getElementById('gate-search-results');
+  res.className = 'ar';
+  res.innerHTML = `<span class="ri">⏳</span><div class="rn2">Searching...</div>`;
+  res.style.display = 'block';
+  searchRes.style.display = 'none';
+
+  try {
+    const regs = await apiFetch('/api/registrations');
+    const q = query.toLowerCase();
+    const matches = regs.registrations.filter(r =>
+      r.token === query.padStart(3,'0') ||
+      r.token === query ||
+      r.name.toLowerCase().includes(q) ||
+      r.mobile.includes(query)
+    );
+
+    if (matches.length === 0) {
+      res.className = 'ar rer';
+      res.innerHTML = `<span class="ri">❌</span><div class="rn2">Not Found</div><div class="rd">No registration matches "${query}"</div>`;
+      return;
+    }
+
+    if (matches.length === 1) {
+      res.style.display = 'none';
+      input.value = '';
+      const r = matches[0];
+      await processGate(`PASS:${r.token}|N:${r.name}|P:${r.persons}|A:${r.paid}|M:${r.mobile}`);
+      return;
+    }
+
+    // Multiple matches — show list to pick from
+    res.style.display = 'none';
+    searchRes.style.display = 'block';
+    searchRes.innerHTML = `<div style="font-size:13px;color:var(--mt);margin-bottom:8px;">Multiple matches — tap the correct family:</div>` +
+      matches.map(r => `
+        <div onclick="selectGateEntry('${r.token}','${r.name.replace(/'/g,"\\'")}',${r.persons},${r.paid},'${r.mobile}')"
+          style="background:rgba(255,255,255,.07);border-radius:10px;padding:12px;margin-bottom:8px;cursor:pointer;border:1px solid rgba(255,255,255,.1);">
+          <div style="font-weight:700;color:#fff;font-size:15px;">#${r.token} — ${r.name}</div>
+          <div style="font-size:12px;color:var(--mt);">📱 ${r.mobile} · 👥 ${r.persons} members · ₹${r.paid} ${r.attended ? '· <span style="color:#4CAF50;">✅ Already Attended</span>' : ''}</div>
+        </div>`).join('');
+  } catch(e) {
+    res.className = 'ar rer';
+    res.innerHTML = `<span class="ri">❌</span><div class="rn2">Error</div><div class="rd">${e.message}</div>`;
+  }
+}
+
+async function selectGateEntry(token, name, persons, paid, mobile) {
+  document.getElementById('gate-search-results').style.display = 'none';
+  document.getElementById('gmt').value = '';
+  await processGate(`PASS:${token}|N:${name}|P:${persons}|A:${paid}|M:${mobile}`);
 }
 
 async function processGate(data) {
