@@ -1,0 +1,1108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ISKCON Society — Ram Navmi Celebration 2025</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jsQR/1.4.0/jsQR.min.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Sanskrit&family=Crimson+Pro:wght@300;400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap');
+:root{
+  --sf:#E8620A;--sfl:#FF9A3C;--sfp:#FFF4EC;
+  --gd:#C9940A;--gdl:#F0C040;
+  --dp:#1A0800;--sf2:#2C1200;
+  --bd:rgba(201,148,10,.22);--tx:#2A1200;--mt:#8B6A3E;
+  --ok:#2E7D32;--sh:0 4px 28px rgba(232,98,10,.10);--cb:#FFFBF5;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--sfp);color:var(--tx);min-height:100vh;}
+body::before{content:'ISKCON';position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);font-family:'Crimson Pro',serif;font-size:22vw;font-weight:900;color:rgba(232,98,10,.03);pointer-events:none;z-index:0;line-height:1;letter-spacing:-2px;white-space:nowrap;}
+
+/* NAV */
+.nav{position:fixed;top:0;left:0;right:0;z-index:200;background:var(--dp);height:54px;display:flex;align-items:center;padding:0 10px;gap:3px;box-shadow:0 2px 16px rgba(0,0,0,.35);}
+.nav-logo{font-family:'Tiro Devanagari Sanskrit',serif;color:var(--sfl);font-size:18px;margin-right:auto;letter-spacing:1px;white-space:nowrap;}
+.nav-btn{padding:5px 10px;border-radius:20px;border:1px solid rgba(255,107,0,.3);background:transparent;color:rgba(255,255,255,.55);font-family:'DM Sans',sans-serif;font-size:11px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+.nav-btn.active{background:var(--sf);border-color:var(--sf);color:#fff;}
+.nav-btn:hover:not(.active){border-color:var(--sfl);color:var(--sfl);}
+
+/* SERVER STATUS PILL */
+.srv-pill{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:10px;font-weight:600;letter-spacing:.5px;margin-left:6px;cursor:pointer;}
+.srv-ok{background:rgba(46,125,50,.25);border:1px solid rgba(76,175,80,.4);color:#81C784;}
+.srv-err{background:rgba(198,40,40,.25);border:1px solid rgba(239,154,154,.4);color:#EF9A9A;}
+.srv-dot{width:6px;height:6px;border-radius:50%;}
+.srv-ok .srv-dot{background:#4CAF50;animation:sdot 1.5s infinite;}
+.srv-err .srv-dot{background:#EF5350;}
+@keyframes sdot{0%,100%{opacity:1}50%{opacity:.3}}
+
+/* PAGES */
+.page{display:none;min-height:100vh;padding:68px 14px 36px;position:relative;z-index:1;animation:fadeUp .35s ease;}
+.page.active{display:block;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+
+/* SHARED */
+.ph{background:linear-gradient(135deg,var(--dp),var(--sf2));border-radius:20px;padding:24px 20px 22px;margin-bottom:16px;text-align:center;position:relative;overflow:hidden;}
+.ph::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gd),var(--sf),var(--gd),transparent);}
+.ph-om{display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+.ph-om svg{filter:drop-shadow(0 0 8px rgba(212,160,23,.5));}
+.ph-om-emoji{font-size:32px;display:block;margin-bottom:6px;}
+.ph-title{font-family:'Crimson Pro',serif;font-size:26px;font-weight:700;color:#fff;margin-bottom:3px;}
+.ph-sub{font-size:12px;color:rgba(255,255,255,.45);font-weight:300;}
+.card{background:var(--cb);border-radius:18px;border:1px solid var(--bd);padding:20px;margin-bottom:14px;box-shadow:var(--sh);}
+.ct{font-family:'Crimson Pro',serif;font-size:18px;font-weight:700;color:var(--sf);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.fg{margin-bottom:14px;}
+label{display:block;font-size:11px;font-weight:600;letter-spacing:1.4px;text-transform:uppercase;color:var(--mt);margin-bottom:5px;}
+input,select,textarea{width:100%;background:var(--sfp);border:1.5px solid rgba(201,148,10,.18);border-radius:10px;padding:11px 13px;color:var(--tx);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:all .2s;-webkit-appearance:none;}
+input:focus,select:focus,textarea:focus{border-color:var(--sf);background:#fff;box-shadow:0 0 0 3px rgba(232,98,10,.08);}
+input::placeholder{color:rgba(139,106,62,.35);}
+select option{background:#fff;}
+.r2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.er{color:#c62828;font-size:12px;margin-top:4px;display:none;}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px 20px;border-radius:11px;border:none;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:600;cursor:pointer;transition:all .2s;}
+.bp{background:linear-gradient(135deg,var(--sfl),var(--sf));color:#fff;box-shadow:0 4px 16px rgba(232,98,10,.32);}
+.bp:hover{transform:translateY(-2px);}
+.bd2{background:var(--dp);color:#fff;}
+.bg{background:linear-gradient(135deg,#66BB6A,#2E7D32);color:#fff;}
+.bo{background:transparent;border:1.5px solid var(--bd);color:var(--mt);margin-top:10px;}
+.bo:hover{border-color:var(--sf);color:var(--sf);}
+.bgo{background:linear-gradient(135deg,var(--gdl),var(--gd));color:var(--dp);font-weight:700;}
+.bsm{padding:8px 14px;font-size:12px;width:auto;border-radius:8px;}
+
+/* STAT BOXES */
+.s4{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px;}
+.sb{background:var(--cb);border-radius:14px;padding:14px 8px;text-align:center;border:1px solid var(--bd);box-shadow:var(--sh);}
+.sn{font-family:'Crimson Pro',serif;font-size:26px;font-weight:700;color:var(--sf);line-height:1;margin-bottom:2px;}
+.ss{font-size:11px;color:var(--gd);font-weight:600;margin-bottom:2px;}
+.sl{font-size:10px;color:var(--mt);font-weight:500;letter-spacing:.4px;text-transform:uppercase;}
+
+/* SCANNER */
+.sw{border-radius:18px;overflow:hidden;border:2px solid var(--bd);background:#0a0a0a;position:relative;aspect-ratio:1;max-width:300px;margin:0 auto 14px;}
+.sw video{width:100%;height:100%;object-fit:cover;display:none;}
+.cp{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:rgba(255,255,255,.45);}
+.cp .ico{font-size:44px;animation:pls 2s infinite;}
+@keyframes pls{0%,100%{opacity:.5;transform:scale(1)}50%{opacity:1;transform:scale(1.06)}}
+.cors{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:160px;height:160px;pointer-events:none;}
+.cor{position:absolute;width:24px;height:24px;border-color:var(--sfl);border-style:solid;}
+.tl{top:0;left:0;border-width:3px 0 0 3px;border-radius:4px 0 0 0;}
+.tr{top:0;right:0;border-width:3px 3px 0 0;border-radius:0 4px 0 0;}
+.bl{bottom:0;left:0;border-width:0 0 3px 3px;border-radius:0 0 0 4px;}
+.br{bottom:0;right:0;border-width:0 3px 3px 0;border-radius:0 0 4px 0;}
+.bm{position:absolute;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--sfl),transparent);top:0;animation:bma 2s linear infinite;display:none;}
+@keyframes bma{0%{top:0}100%{top:160px}}
+canvas{display:none;}
+
+/* QR + SUMMARY */
+.qw{background:#fff;border-radius:14px;padding:14px;display:inline-flex;flex-direction:column;align-items:center;gap:7px;box-shadow:0 4px 18px rgba(0,0,0,.1);border:2px solid var(--bd);}
+.ql{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--mt);font-weight:600;}
+.tbig{font-family:'Crimson Pro',serif;font-size:72px;font-weight:700;line-height:1;color:var(--sf);text-align:center;}
+.sr{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid rgba(201,148,10,.1);font-size:14px;}
+.sr:last-child{border-bottom:none;}
+.sk{color:var(--mt);font-weight:300;}.sv{font-weight:600;color:var(--tx);}
+
+/* PERSONS RING */
+.pr{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--sfl),var(--sf));display:flex;flex-direction:column;align-items:center;justify-content:center;margin:10px auto;box-shadow:0 0 0 6px rgba(232,98,10,.15),0 0 0 12px rgba(232,98,10,.07);}
+.pr-n{font-family:'Crimson Pro',serif;font-size:38px;font-weight:700;color:#fff;line-height:1;}
+.pr-l{font-size:9px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:1px;}
+
+/* ATTENDANCE RESULT */
+.ar{border-radius:18px;padding:22px 18px;text-align:center;margin-bottom:14px;display:none;}
+.rok{background:linear-gradient(135deg,#E8F5E9,#C8E6C9);border:2px solid #81C784;}
+.rer{background:linear-gradient(135deg,#FFEBEE,#FFCDD2);border:2px solid #EF9A9A;}
+.rdu{background:linear-gradient(135deg,#E3F2FD,#BBDEFB);border:2px solid #90CAF9;}
+.ri{font-size:52px;display:block;margin-bottom:10px;}
+.rn2{font-family:'Crimson Pro',serif;font-size:26px;font-weight:700;margin-bottom:4px;}
+.rd{font-size:13px;color:var(--mt);}
+
+/* PAYMENT */
+.pyc{background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border:2px solid var(--gd);border-radius:18px;padding:20px;text-align:center;margin-bottom:14px;}
+.pya{font-family:'Crimson Pro',serif;font-size:52px;font-weight:700;color:var(--gd);line-height:1;margin:6px 0;}
+.ug{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0;}
+.ub{padding:11px 8px;border-radius:10px;border:1.5px solid var(--bd);background:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--tx);}
+.ub.sel{border-color:var(--sf);background:rgba(232,98,10,.05);color:var(--sf);}
+
+/* LOADING SPINNER */
+.spinner{display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* INVITE BOX */
+.ib{background:linear-gradient(135deg,var(--dp),var(--sf2));border-radius:20px;padding:26px 18px;text-align:center;margin-bottom:14px;border:1px solid rgba(201,148,10,.3);}
+.ib h3{font-family:'Crimson Pro',serif;font-size:22px;font-weight:700;color:#fff;margin-bottom:4px;}
+.ib p{font-size:12px;color:rgba(255,255,255,.4);margin-bottom:18px;}
+
+/* ATT LOG */
+.ali{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bd);}
+.ali:last-child{border-bottom:none;}
+.alt{width:38px;height:38px;border-radius:8px;background:rgba(232,98,10,.1);display:flex;align-items:center;justify-content:center;font-family:'Crimson Pro',serif;font-size:15px;font-weight:700;color:var(--sf);flex-shrink:0;}
+.ali-info{flex:1;min-width:0;}
+.ali-name{font-weight:600;font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ali-meta{font-size:11px;color:var(--mt);}
+.ali-time{font-size:11px;color:var(--mt);flex-shrink:0;}
+.ppill{display:inline-flex;align-items:center;gap:3px;background:var(--sf);color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;margin-left:4px;}
+
+/* DASHBOARD */
+.dh{background:linear-gradient(135deg,var(--dp),var(--sf2));border-radius:22px;padding:24px 16px;margin-bottom:14px;text-align:center;position:relative;overflow:hidden;border:1px solid rgba(201,148,10,.2);}
+.dh::before{content:'';position:absolute;top:-50%;left:-20%;width:140%;height:140%;background:radial-gradient(ellipse,rgba(232,98,10,.09) 0%,transparent 65%);pointer-events:none;}
+.dh::after{content:'';position:absolute;bottom:0;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--gd),var(--sf),var(--gd),transparent);}
+.lb{display:inline-flex;align-items:center;gap:6px;background:rgba(46,125,50,.2);border:1px solid rgba(46,125,50,.4);border-radius:100px;padding:4px 12px;font-size:11px;color:#81C784;font-weight:600;margin-bottom:12px;letter-spacing:1px;}
+.ld{width:7px;height:7px;border-radius:50%;background:#4CAF50;animation:ldp 1.2s infinite;}
+@keyframes ldp{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.8)}}
+.dual-hero{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px;}
+.dhb{padding:10px 6px;position:relative;}
+.dhb::after{content:'';position:absolute;top:15%;right:0;width:1px;height:70%;background:rgba(255,255,255,.12);}
+.dhb:last-child::after{display:none;}
+.dh-num{font-family:'Crimson Pro',serif;font-size:72px;font-weight:700;line-height:1;color:var(--sfl);text-shadow:0 0 30px rgba(232,98,10,.4);}
+.dh-lbl{font-size:11px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+.dh-sub{font-size:10px;color:rgba(255,255,255,.3);margin-top:2px;}
+.cc{background:linear-gradient(135deg,#0D2A0D,#1A3A1A);border-radius:20px;padding:20px;margin-bottom:14px;border:1px solid rgba(76,175,80,.3);text-align:center;}
+.ca{font-family:'Crimson Pro',serif;font-size:52px;font-weight:700;color:#81C784;line-height:1;text-shadow:0 0 24px rgba(76,175,80,.4);margin-bottom:4px;}
+.cl{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;}
+.cr{display:flex;justify-content:center;gap:20px;}
+.cn{font-family:'Crimson Pro',serif;font-size:22px;font-weight:700;color:#A5D6A7;}
+.cm{font-size:10px;color:rgba(255,255,255,.3);text-transform:uppercase;letter-spacing:1px;}
+.ps{background:var(--cb);border-radius:18px;padding:18px;margin-bottom:14px;border:1px solid var(--bd);box-shadow:var(--sh);}
+.pt{font-family:'Crimson Pro',serif;font-size:17px;font-weight:700;color:var(--sf);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.pi{margin-bottom:12px;}
+.phd{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px;}
+.pn{font-size:12px;font-weight:500;}.pc{font-size:12px;color:var(--mt);}
+.pt2{height:9px;background:var(--sfp);border-radius:100px;overflow:hidden;}
+.pf{height:100%;border-radius:100px;transition:width .6s cubic-bezier(.34,1.56,.64,1);}
+.fs{background:linear-gradient(90deg,var(--sfl),var(--sf));}
+.fg2{background:linear-gradient(90deg,var(--gdl),var(--gd));}
+.fgr{background:linear-gradient(90deg,#66BB6A,#2E7D32);}
+.fb{background:linear-gradient(90deg,#64B5F6,#1565C0);}
+.cb{display:flex;align-items:flex-end;gap:5px;height:80px;padding:0 2px;margin-bottom:6px;}
+.cbc{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;justify-content:flex-end;}
+.cbr{width:100%;border-radius:4px 4px 0 0;background:linear-gradient(180deg,var(--sfl),var(--sf));transition:height .5s ease;min-height:2px;}
+.cbr.cur{background:linear-gradient(180deg,var(--gdl),var(--gd));box-shadow:0 0 8px rgba(201,148,10,.4);}
+.cbl{font-size:8px;color:var(--mt);white-space:nowrap;}
+.cbc2{font-size:9px;color:var(--sf);font-weight:600;min-height:12px;}
+.re{display:flex;align-items:center;gap:10px;padding:9px 11px;background:var(--sfp);border-radius:10px;margin-bottom:7px;}
+.re-tok{width:34px;height:34px;border-radius:7px;background:var(--sf);display:flex;align-items:center;justify-content:center;font-family:'Crimson Pro',serif;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;}
+.re-info{flex:1;min-width:0;}
+.re-name{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.re-meta{font-size:11px;color:var(--mt);}
+.re-time{font-size:11px;color:var(--mt);flex-shrink:0;}
+.rn3{text-align:center;font-size:11px;color:var(--mt);padding:6px;}
+@keyframes flash{0%{color:var(--sfl);text-shadow:0 0 40px rgba(232,98,10,.9);transform:scale(1.08)}100%{color:var(--sfl);text-shadow:0 0 40px rgba(232,98,10,.4);transform:scale(1)}}
+@media(max-width:380px){.r2{grid-template-columns:1fr}.ug{grid-template-columns:1fr}.dual-hero{grid-template-columns:1fr}.dhb::after{display:none}.dh-num{font-size:56px;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<div class="nav">
+  <span class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="72" height="28" style="vertical-align:middle;margin-right:4px;"><rect width="100" height="40" rx="6" fill="none" stroke="#D4A017" stroke-width="1.5"/><text x="50" y="16" text-anchor="middle" font-family="serif" font-size="13" fill="#F0C040" font-weight="bold" letter-spacing="1">ISKCON</text><text x="50" y="30" text-anchor="middle" font-family="serif" font-size="8" fill="#FF9A3C" letter-spacing="1.5">हरे कृष्ण</text></svg> Ram Navmi</span>
+  <button class="nav-btn active" onclick="setMode('admin',this)">⚙ Admin</button>
+  <button class="nav-btn" onclick="setMode('register',this)">📝 Register</button>
+  <button class="nav-btn" onclick="setMode('gate',this)">🚪 Gate</button>
+  <button class="nav-btn" onclick="setMode('dashboard',this)">📊 Live</button>
+  <!-- Server status pill -->
+  <div class="srv-pill srv-err" id="srv-pill" onclick="checkServer()" title="Click to recheck">
+    <div class="srv-dot"></div>
+    <span id="srv-txt">Checking...</span>
+  </div>
+</div>
+
+<!-- ══ ADMIN ══ -->
+<div class="page active" id="page-admin">
+  <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="80" height="80"><circle cx="80" cy="80" r="76" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="80" cy="80" r="64" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="5,4"/><text x="80" y="62" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="30" y1="72" x2="130" y2="72" stroke="#D4A017" stroke-width="0.8" opacity="0.6"/><text x="80" y="92" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="80" y="112" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#D4A017" letter-spacing="2">JAI SHRI RAM</text><line x1="30" y1="120" x2="130" y2="120" stroke="#D4A017" stroke-width="0.8" opacity="0.6"/><text x="80" y="134" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="rgba(212,160,23,0.6)" letter-spacing="1.5">॥ श्री कृष्ण शरणम् ॥</text></svg></span><div class="ph-title">ISKCON Admin Panel</div><div class="ph-sub">ISKCON Society · Ram Navmi Celebration 2025</div></div>
+  <div class="s4">
+    <div class="sb"><div class="sn" id="a-rfam">0</div><div class="ss" id="a-rpers">0 persons</div><div class="sl">Families Reg.</div></div>
+    <div class="sb"><div class="sn" id="a-afam">0</div><div class="ss" id="a-apers">0 persons</div><div class="sl">Families Attended</div></div>
+    <div class="sb"><div class="sn" id="a-col">₹0</div><div class="ss">collected</div><div class="sl">Total Collection</div></div>
+    <div class="sb"><div class="sn" id="a-pend">0</div><div class="ss">families</div><div class="sl">Yet to Arrive</div></div>
+  </div>
+
+  <div class="ib">
+    <h3>📢 Event Invitation QR</h3>
+    <p>ONE QR for ALL devotee families — print &amp; display at venue</p>
+    <div style="display:flex;justify-content:center;margin-bottom:14px;">
+      <div class="qw"><div id="invite-qr"></div><div class="ql">Scan to Register</div></div>
+      <div style="margin-top:10px;background:rgba(255,255,255,.07);border-radius:8px;padding:8px 12px;max-width:320px;word-break:break-all;">
+        <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;">QR points to URL:</div>
+        <div style="font-size:11px;color:var(--gdl);font-family:monospace;" id="invite-url-display">Building URL...</div>
+      </div>
+    </div>
+    <div style="background:rgba(255,255,255,.07);border-radius:10px;padding:10px 12px;font-size:12px;color:rgba(255,255,255,.45);margin-bottom:14px;">
+      💡 Family scans → fills form → pays → gets their own unique Family Entry Pass QR stored in MySQL
+    </div>
+    <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-bottom:10px;">
+      <button class="btn bgo bsm" onclick="printInviteQR()" style="display:inline-flex;width:auto;">🖨 Print QR</button>
+      <button class="btn bsm" id="wa-share-btn" style="background:#25D366;color:#fff;display:inline-flex;width:auto;border:none;font-weight:700;" onclick="shareQRWhatsApp()">📲 Share QR to WhatsApp</button>
+      <button class="btn bsm" onclick="downloadQRImage()" style="background:rgba(255,255,255,.12);color:#fff;display:inline-flex;width:auto;border:none;">⬇️ Download QR Image</button>
+      <button class="btn bsm" style="background:rgba(255,255,255,.12);color:#fff;display:inline-flex;width:auto;border:none;" onclick="window.open(API+'/api/export/csv')">📥 CSV</button>
+    </div>
+    <div style="background:rgba(37,211,102,.1);border:1px solid rgba(37,211,102,.3);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(255,255,255,.6);text-align:center;">
+      📱 <strong style="color:#25D366;">Share QR to WhatsApp</strong> sends the QR code image directly to any contact · Works on mobile &amp; desktop
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="ct">📋 Family Registration List <span style="font-size:12px;color:var(--mt);margin-left:auto;font-weight:400;" onclick="loadAdminData()" style="cursor:pointer;">↻ Refresh</span></div>
+    <div id="admin-list"><div style="text-align:center;padding:20px;color:var(--mt);">Loading from database...</div></div>
+  </div>
+</div>
+
+<!-- ══ REGISTER ══ -->
+<div class="page" id="page-register">
+  <!-- step 1 -->
+  <div id="rs1">
+    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Registration</div><div class="ph-sub">Scan the Ram Navmi invitation QR to begin</div></div>
+    <div class="card" style="text-align:center;">
+      <div class="ct" style="justify-content:center;">📷 Scan Invitation QR</div>
+      <div class="sw">
+        <video id="rv" playsinline></video>
+        <div class="cp" id="rph"><div class="ico">📷</div><div style="font-size:12px;">Tap below to activate</div></div>
+        <div class="cors" id="rc" style="display:none;"><div class="cor tl"></div><div class="cor tr"></div><div class="cor bl"></div><div class="cor br"></div><div class="bm" id="rb"></div></div>
+        <canvas id="rcan"></canvas>
+      </div>
+      <button class="btn bp" onclick="startRegCam()" id="rcb" style="max-width:280px;margin:0 auto 10px;">📷 Activate Camera</button>
+      <button class="btn bo" onclick="skipScan()" style="max-width:280px;margin:0 auto;">✏️ Fill Form Directly</button>
+    </div>
+  </div>
+  <!-- step 2 -->
+  <div id="rs2" style="display:none;">
+    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Family Details</div><div class="ph-sub">One form covers all family members</div></div>
+    <div class="card">
+      <div class="ct">👨‍👩‍👧 Family Information</div>
+      <div class="fg"><label>Family Head / Full Name *</label><input type="text" id="fn" placeholder="Enter full name" autocomplete="name"><div class="er" id="en">Please enter your name</div></div>
+      <div class="fg"><label>Address *</label><textarea id="fa" rows="2" placeholder="House no., Street, Area, City..." style="resize:none;"></textarea><div class="er" id="ea">Please enter address</div></div>
+      <div class="r2">
+        <div class="fg"><label>Mobile No. *</label><input type="tel" id="fm" placeholder="10-digit number" maxlength="10"><div class="er" id="em">Valid 10-digit number</div></div>
+        <div class="fg"><label>Family Members *</label>
+          <select id="fp" onchange="updatePreview()">
+            <option value="">Select</option>
+            <option value="1">1 member</option><option value="2">2 members</option><option value="3">3 members</option>
+            <option value="4">4 members</option><option value="5">5 members</option><option value="6">6 members</option>
+            <option value="7">7 members</option><option value="8">8 members</option><option value="9">9 members</option><option value="10">10 members</option>
+          </select>
+          <div class="er" id="ep">Please select</div>
+        </div>
+      </div>
+      <div id="fprev" style="display:none;background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border:1.5px solid var(--gd);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;">
+        <div style="font-size:12px;color:var(--mt);margin-bottom:4px;">ONE Ram Navmi Pass generated for your family of</div>
+        <div style="font-family:'Crimson Pro',serif;font-size:42px;font-weight:700;color:var(--sf);line-height:1;" id="fpn">—</div>
+        <div style="font-size:13px;color:var(--mt);margin-bottom:4px;" id="fpl">members</div>
+        <div style="font-size:14px;font-weight:700;color:var(--gd);">Amount: <span id="fpa">₹0</span></div>
+      </div>
+      <button class="btn bp" onclick="goPayment()" id="pay-btn">Continue to Payment →</button>
+    </div>
+  </div>
+  <!-- step 3 -->
+  <div id="rs3" style="display:none;">
+    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Donation</div><div class="ph-sub">₹20 per family member</div></div>
+    <div class="pyc">
+      <div style="font-size:11px;color:var(--mt);letter-spacing:1px;text-transform:uppercase;">Total Amount Due</div>
+      <div class="pya" id="pamt">₹20</div>
+      <div style="font-size:13px;color:var(--mt);margin-bottom:14px;" id="pnote">₹20 × 1 member</div>
+      <div style="background:#fff;border-radius:12px;padding:14px;margin-bottom:12px;">
+        <div style="font-size:11px;color:var(--mt);margin-bottom:10px;letter-spacing:1px;text-transform:uppercase;">Scan UPI QR to Pay</div>
+        <div id="upi-qr" style="display:flex;justify-content:center;margin-bottom:6px;"></div>
+        <div style="font-size:11px;color:var(--mt);text-align:center;">GPay · PhonePe · Paytm · Any UPI app</div>
+      </div>
+      <div style="font-size:12px;color:var(--mt);margin-bottom:10px;">— or open directly —</div>
+      <div class="ug">
+        <button class="ub" onclick="openUPI('gpay')">🟢 GPay</button>
+        <button class="ub" onclick="openUPI('phonepe')">💜 PhonePe</button>
+        <button class="ub" onclick="openUPI('paytm')">💙 Paytm</button>
+        <button class="ub" onclick="openUPI('bhim')">🇮🇳 BHIM</button>
+      </div>
+      <div style="font-size:12px;color:var(--mt);padding:10px;background:rgba(255,255,255,.6);border-radius:8px;margin-bottom:14px;">ℹ️ Complete payment, then tap Confirm below.</div>
+      <button class="btn bg" onclick="confirmReg()" id="confirm-btn">✅ Payment Done — Get Family Entry Pass</button>
+      <button class="btn bo" onclick="goStep(2)">← Back</button>
+    </div>
+  </div>
+  <!-- step 4 -->
+  <div id="rs4" style="display:none;">
+    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Family Pass Ready!</div><div class="ph-sub">Saved to MySQL · ISKCON Ram Navmi 2025</div></div>
+    <div class="card" style="text-align:center;">
+      <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
+        <div>
+          <div style="font-size:11px;color:var(--mt);letter-spacing:1px;text-transform:uppercase;margin-bottom:2px;">Token No.</div>
+          <div class="tbig" id="ctok">001</div>
+        </div>
+        <div class="pr"><div class="pr-n" id="cpr">1</div><div class="pr-l">Members</div></div>
+      </div>
+      <div style="background:linear-gradient(135deg,var(--dp),var(--sf2));border-radius:16px;padding:20px;margin-bottom:16px;">
+        <div style="font-size:11px;color:rgba(255,255,255,.5);letter-spacing:2px;text-transform:uppercase;margin-bottom:8px;">🎫 Family Entry Pass QR</div>
+        <div style="font-size:13px;color:rgba(255,255,255,.6);margin-bottom:14px;" id="cqrsub">Valid for 1 member — scan once at gate</div>
+        <div style="display:flex;justify-content:center;margin-bottom:10px;">
+          <div class="qw"><div id="cqr"></div><div class="ql">Family Gate Pass — Unique</div></div>
+        </div>
+        <div style="font-size:12px;color:rgba(255,255,255,.4);">📸 Screenshot this screen · Show at gate entrance</div>
+      </div>
+      <div style="background:linear-gradient(135deg,rgba(232,98,10,.08),rgba(232,98,10,.03));border:1px solid rgba(232,98,10,.2);border-radius:12px;padding:14px;margin-bottom:14px;text-align:left;">
+        <div style="font-size:12px;font-weight:700;color:var(--sf);margin-bottom:6px;">ℹ️ How Gate Entry Works</div>
+        <div style="font-size:12px;color:var(--mt);line-height:1.6;">Volunteer scans this QR once → System calls MySQL → Marks <strong id="chow" style="color:var(--sf);">1 person</strong> as attended in database automatically.</div>
+      </div>
+      <div id="csumm" style="text-align:left;margin-bottom:14px;"></div>
+      <div style="background:var(--sfp);border-radius:12px;padding:12px;margin-bottom:14px;font-size:13px;color:var(--mt);">🙏 Hare Krishna! We look forward to welcoming your family at Ram Navmi Celebration.</div>
+      <button class="btn bo" onclick="resetReg()">Register Another Devotee Family</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══ GATE ══ -->
+<div class="page" id="page-gate">
+  <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Gate Check-In</div><div class="ph-sub">Scan → MySQL updated → All members counted</div></div>
+  <div class="s4">
+    <div class="sb"><div class="sn" id="g-fam">0</div><div class="ss" id="g-fams">families</div><div class="sl">Families Entered</div></div>
+    <div class="sb"><div class="sn" id="g-pers">0</div><div class="ss" id="g-perss">persons</div><div class="sl">Total Persons</div></div>
+    <div class="sb"><div class="sn" id="g-reg">0</div><div class="ss">registered</div><div class="sl">Total Families</div></div>
+    <div class="sb"><div class="sn" id="g-pend">0</div><div class="ss">pending</div><div class="sl">Yet to Arrive</div></div>
+  </div>
+  <div class="ar" id="att-res"></div>
+  <div class="card" style="text-align:center;">
+    <div class="ct" style="justify-content:center;">📷 Scan Family Entry Pass QR</div>
+    <div class="sw">
+      <video id="gv" playsinline></video>
+      <div class="cp" id="gph"><div class="ico">🎯</div><div style="font-size:12px;color:rgba(255,255,255,.4);">Tap to start</div></div>
+      <div class="cors" id="gc" style="display:none;"><div class="cor tl"></div><div class="cor tr"></div><div class="cor bl"></div><div class="cor br"></div><div class="bm" id="gb"></div></div>
+      <canvas id="gcan"></canvas>
+    </div>
+    <button class="btn bp" onclick="startGateCam()" id="gsb" style="max-width:320px;margin:0 auto 10px;">📷 Start Gate Scanner</button>
+    <button class="btn bo" onclick="stopGateCam()" id="gstb" style="max-width:320px;margin:0 auto;display:none;">⏹ Stop Scanner</button>
+  </div>
+  <div class="card">
+    <div class="ct">📋 Attendance Log <span style="font-size:12px;color:var(--mt);margin-left:auto;font-weight:400;cursor:pointer;" onclick="loadAttLog()">↻ Refresh</span></div>
+    <div id="att-log"><div style="text-align:center;padding:18px;color:var(--mt);font-size:14px;">No entries yet</div></div>
+  </div>
+</div>
+
+<!-- ══ DASHBOARD ══ -->
+<div class="page" id="page-dashboard">
+  <div class="dh">
+    <div style="display:flex;justify-content:center;margin-bottom:10px;">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="160" height="48"><rect width="200" height="60" rx="10" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="1.5"/><text x="100" y="26" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#F0C040" font-weight="bold" letter-spacing="3">ISKCON</text><line x1="20" y1="33" x2="180" y2="33" stroke="#D4A017" stroke-width="0.8" opacity="0.5"/><text x="100" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#FF9A3C" letter-spacing="2">हरे कृष्ण · JAI SHRI RAM</text></svg>
+    </div>
+    <div class="lb"><div class="ld"></div> 🔴 LIVE · ISKCON Ram Navmi 2025</div>
+    <div class="dual-hero">
+      <div class="dhb"><div class="dh-num" id="dg">0</div><div class="dh-lbl">Families at Gate</div><div class="dh-sub" id="dgsub">0 registered</div></div>
+      <div class="dhb"><div class="dh-num" id="dp">0</div><div class="dh-lbl">Total Persons</div><div class="dh-sub" id="dpsub">0 registered</div></div>
+    </div>
+    <div style="display:flex;justify-content:center;gap:16px;flex-wrap:wrap;">
+      <div style="text-align:center;padding:0 8px;"><div style="font-family:'Crimson Pro',serif;font-size:24px;font-weight:700;color:var(--gdl);" id="dd">0</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;">Pending Families</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+      <div style="text-align:center;padding:0 8px;"><div style="font-family:'Crimson Pro',serif;font-size:24px;font-weight:700;color:var(--gdl);" id="davg">0</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;">Avg Members/Family</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+      <div style="text-align:center;padding:0 8px;"><div style="font-family:'Crimson Pro',serif;font-size:24px;font-weight:700;color:var(--gdl);" id="dl">—</div><div style="font-size:10px;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:1px;">Last Token</div></div>
+    </div>
+  </div>
+  <div class="cc">
+    <div class="cl">💰 Total Collection</div>
+    <div class="ca" id="dc">₹0</div>
+    <div class="cr">
+      <div><div class="cn" id="davgp">₹0</div><div class="cm">Avg / Family</div></div>
+      <div style="width:1px;background:rgba(255,255,255,.1);"></div>
+      <div><div class="cn" id="dpc">0 persons</div><div class="cm">Pending Persons</div></div>
+    </div>
+  </div>
+  <div class="ps">
+    <div class="pt">📊 Progress</div>
+    <div class="pi"><div class="phd"><span class="pn">🏠 Families: Gate vs Registered</span><span class="pc" id="pb1t">0/0</span></div><div class="pt2"><div class="pf fs" id="pb1" style="width:0%"></div></div></div>
+    <div class="pi"><div class="phd"><span class="pn">👥 Persons: Attended vs Registered</span><span class="pc" id="pb2t">0/0</span></div><div class="pt2"><div class="pf fg2" id="pb2" style="width:0%"></div></div></div>
+    <div class="pi"><div class="phd"><span class="pn">👥 Total Persons vs Target (500)</span><span class="pc" id="pb3t">0/500</span></div><div class="pt2"><div class="pf fgr" id="pb3" style="width:0%"></div></div></div>
+    <div class="pi"><div class="phd"><span class="pn">💰 Collection vs Target (₹10,000)</span><span class="pc" id="pb4t">₹0/₹10,000</span></div><div class="pt2"><div class="pf fb" id="pb4" style="width:0%"></div></div></div>
+  </div>
+  <div class="ps">
+    <div class="pt">🕐 Hourly Entry Flow</div>
+    <div class="cb" id="dchart"></div>
+    <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mt);padding:0 2px;"><span>8am</span><span>10</span><span>12</span><span>2pm</span><span>4</span><span>6</span><span>8pm</span></div>
+  </div>
+  <div class="ps">
+    <div class="pt">⚡ Recent Gate Entries</div>
+    <div id="drecent"><div style="text-align:center;padding:18px;color:var(--mt);font-size:14px;">Waiting for first Ram Navmi entry...</div></div>
+  </div>
+  <div class="rn3" id="dref">Auto-refreshes every 5 seconds from MySQL</div>
+</div>
+
+<!-- ══════════════ SCRIPT ══════════════ -->
+<script>
+// ══════════════════════════════════════════════
+//  CONFIG — SET YOUR FLASK SERVER IP HERE
+// ══════════════════════════════════════════════
+// Replace with your PC's LAN IP address
+// Run: ipconfig (Windows) or ip addr (Linux) to find it
+// Example: 'http://192.168.1.105:5000'
+const API = 'http://192.168.1.100:5000';   // ← CHANGE THIS IP
+const UPI_ID = 'yourname@upi';             // ← CHANGE YOUR UPI ID
+
+// ── INVITATION QR ──
+// The QR code encodes a real URL so any phone camera / Google Lens
+// opens the registration form directly — no app needed.
+// This URL must point to where index.html is served on your LAN.
+// Flask serves index.html at root — just run python app.py
+// Set API to your PC's LAN IP and the QR will work on all phones
+const REGISTER_URL = API + '/?register=1';  // Flask serves index.html at root
+const INV = REGISTER_URL;  // used by built-in camera scanner check
+
+// ══════════════════════════════════════════════
+//  API HELPER
+// ══════════════════════════════════════════════
+async function apiFetch(path, opts = {}) {
+  const url = API + path;
+  const defaults = {
+    headers: { 'Content-Type': 'application/json' },
+    ...opts,
+  };
+  const res = await fetch(url, defaults);
+  return res.json();
+}
+
+// ══════════════════════════════════════════════
+//  SERVER STATUS CHECK
+// ══════════════════════════════════════════════
+async function checkServer() {
+  const pill = document.getElementById('srv-pill');
+  const txt  = document.getElementById('srv-txt');
+  pill.className = 'srv-pill srv-err';
+  txt.textContent = 'Checking...';
+  try {
+    const d = await apiFetch('/api/ping');
+    if (d.status === 'ok') {
+      pill.className = 'srv-pill srv-ok';
+      txt.textContent = 'MySQL Connected';
+    } else {
+      txt.textContent = 'API Error';
+    }
+  } catch {
+    pill.className = 'srv-pill srv-err';
+    txt.textContent = 'Server Offline';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  NAV
+// ══════════════════════════════════════════════
+let dashInt = null;
+function setMode(m, btn) {
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-' + m).classList.add('active');
+  stopAllCams();
+  if (m === 'admin')     { loadAdminData(); }
+  if (m === 'gate')      { loadGateStats(); loadAttLog(); }
+  if (m === 'dashboard') { startDash(); } else { stopDash(); }
+}
+
+// ══════════════════════════════════════════════
+//  ADMIN
+// ══════════════════════════════════════════════
+async function loadAdminData() {
+  try {
+    const stats = await apiFetch('/api/stats');
+    document.getElementById('a-rfam').textContent  = stats.registered_families;
+    document.getElementById('a-rpers').textContent = stats.registered_persons + ' persons';
+    document.getElementById('a-afam').textContent  = stats.attended_families;
+    document.getElementById('a-apers').textContent = stats.attended_persons + ' persons';
+    document.getElementById('a-col').textContent   = '₹' + stats.collection;
+    document.getElementById('a-pend').textContent  = stats.pending_families;
+
+    const data = await apiFetch('/api/registrations');
+    const el = document.getElementById('admin-list');
+    if (!data.registrations.length) {
+      el.innerHTML = '<div style="text-align:center;padding:18px;color:var(--mt);">No registrations yet in database</div>';
+      return;
+    }
+    el.innerHTML = data.registrations.map(r => {
+      const n = parseInt(r.persons);
+      const badge = r.attended
+        ? `<span style="background:#E8F5E9;color:#2E7D32;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">✓ Entered</span>`
+        : `<span style="background:#FFF3E0;color:#E65100;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">Pending</span>`;
+      const ftag = n > 1
+        ? `<span style="background:rgba(232,98,10,.12);color:var(--sf);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👨‍👩‍👧 ${n}</span>`
+        : `<span style="background:rgba(201,148,10,.12);color:var(--gd);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👤 1</span>`;
+      return `<div class="ali"><div class="alt">${r.token}</div>
+        <div class="ali-info"><div class="ali-name">${r.name}${ftag}</div>
+        <div class="ali-meta">₹${r.paid} · ${r.reg_at}</div></div>${badge}</div>`;
+    }).join('');
+  } catch(e) {
+    document.getElementById('admin-list').innerHTML =
+      `<div style="text-align:center;padding:18px;color:#c62828;">⚠️ Cannot connect to server. Check Flask is running.</div>`;
+  }
+}
+
+function printInviteQR() {
+  const w = window.open('', '_blank');
+  w.document.write(`<html><body style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;font-family:sans-serif;gap:14px;background:#FFF4EC;padding:20px;">
+    <h2 style="color:#E8620A;font-size:28px;text-align:center;">ISKCON Society — Ram Navmi Celebration 2025</h2>
+    <p style="color:#8B6A3E;text-align:center;">Scan this QR to register your family</p>
+    ${document.getElementById('invite-qr').innerHTML}
+    <p style="color:#aaa;font-size:12px;text-align:center;">ISKCON Society · Ram Navmi 2025 · Family Entry Pass</p>
+    <p style="color:#C9940A;font-size:11px;text-align:center;word-break:break-all;padding:0 10px;">URL: " + REGISTER_URL + "</p>
+    <p style="color:#C9940A;font-size:13px;font-weight:bold;">🙏 Hare Krishna · Jai Shri Ram</p>
+  </body></html>`);
+  w.document.close(); w.print();
+}
+// ── Get QR canvas/image from the QRCode library ──
+function getInviteQRCanvas() {
+  // QRCodeJS renders either a canvas or an img tag depending on browser
+  const container = document.getElementById('invite-qr');
+  const canvas = container.querySelector('canvas');
+  if (canvas) return canvas;
+  // Fallback: if it rendered an <img>, draw it to a new canvas
+  const img = container.querySelector('img');
+  if (img) {
+    const c = document.createElement('canvas');
+    c.width = 200; c.height = 200;
+    const ctx = c.getContext('2d');
+    ctx.fillStyle = '#fff';
+    ctx.fillRect(0, 0, 200, 200);
+    ctx.drawImage(img, 0, 0, 200, 200);
+    return c;
+  }
+  return null;
+}
+
+// ── Build a branded QR image (QR + ISKCON header + URL footer) ──
+function buildBrandedQRCanvas() {
+  const qrCanvas = getInviteQRCanvas();
+  if (!qrCanvas) return null;
+
+  const W = 480, H = 560;
+  const c = document.createElement('canvas');
+  c.width = W; c.height = H;
+  const ctx = c.getContext('2d');
+
+  // Background
+  ctx.fillStyle = '#1A0800';
+  ctx.fillRect(0, 0, W, H);
+
+  // Gold border
+  ctx.strokeStyle = '#D4A017';
+  ctx.lineWidth = 3;
+  ctx.strokeRect(6, 6, W-12, H-12);
+
+  // Inner border
+  ctx.strokeStyle = 'rgba(212,160,23,0.3)';
+  ctx.lineWidth = 1;
+  ctx.strokeRect(14, 14, W-28, H-28);
+
+  // Header — ISKCON title
+  ctx.fillStyle = '#F0C040';
+  ctx.font = 'bold 28px Georgia, serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ISKCON SOCIETY', W/2, 56);
+
+  ctx.fillStyle = '#FF9A3C';
+  ctx.font = '16px Georgia, serif';
+  ctx.fillText('Ram Navmi Celebration 2025', W/2, 82);
+
+  // Divider
+  ctx.strokeStyle = 'rgba(212,160,23,0.5)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(30, 96); ctx.lineTo(W-30, 96);
+  ctx.stroke();
+
+  // Draw QR code (centered, white bg)
+  const QR_SIZE = 260;
+  const qrX = (W - QR_SIZE) / 2;
+  const qrY = 110;
+  ctx.fillStyle = '#fff';
+  ctx.beginPath();
+  ctx.roundRect(qrX - 12, qrY - 12, QR_SIZE + 24, QR_SIZE + 24, 12);
+  ctx.fill();
+  ctx.drawImage(qrCanvas, qrX, qrY, QR_SIZE, QR_SIZE);
+
+  // "SCAN TO REGISTER" label
+  ctx.fillStyle = '#F0C040';
+  ctx.font = 'bold 14px Georgia, serif';
+  ctx.letterSpacing = '3px';
+  ctx.fillText('SCAN TO REGISTER', W/2, qrY + QR_SIZE + 42);
+  ctx.letterSpacing = '0px';
+
+  // Divider
+  ctx.strokeStyle = 'rgba(212,160,23,0.4)';
+  ctx.lineWidth = 1;
+  ctx.beginPath();
+  ctx.moveTo(30, qrY + QR_SIZE + 56); ctx.lineTo(W-30, qrY + QR_SIZE + 56);
+  ctx.stroke();
+
+  // URL display
+  ctx.fillStyle = 'rgba(255,255,255,0.6)';
+  ctx.font = '11px monospace';
+  const urlText = REGISTER_URL.length > 48 ? REGISTER_URL.substring(0, 45) + '...' : REGISTER_URL;
+  ctx.fillText(urlText, W/2, qrY + QR_SIZE + 76);
+
+  // Footer
+  ctx.fillStyle = '#FF9A3C';
+  ctx.font = '13px Georgia, serif';
+  ctx.fillText('हरे कृष्ण हरे राम', W/2, H - 44);
+  ctx.fillStyle = '#D4A017';
+  ctx.font = '12px Georgia, serif';
+  ctx.fillText('🙏 Jai Shri Ram · Register your family', W/2, H - 22);
+
+  return c;
+}
+
+// ── Download QR as PNG image ──
+function downloadQRImage() {
+  const canvas = buildBrandedQRCanvas();
+  if (!canvas) { alert('QR not ready yet. Please wait a moment.'); return; }
+  const link = document.createElement('a');
+  link.download = 'ISKCON_RamNavmi_2025_Invitation_QR.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+
+// ── Share QR image to WhatsApp ──
+async function shareQRWhatsApp() {
+  const canvas = buildBrandedQRCanvas();
+  if (!canvas) { alert('QR not ready yet.'); return; }
+
+  const waText = '🪷 *ISKCON Society · Ram Navmi Celebration 2025*\n\n*You and your family are cordially invited!*\n\n📱 Scan the QR image to register your family\n\n🔗 Or open: ' + REGISTER_URL + '\n\n🙏 Hare Krishna · Jai Shri Ram';
+
+  // Try Web Share API first (works on mobile — shares image + text to WhatsApp)
+  if (navigator.share && navigator.canShare) {
+    try {
+      const blob = await new Promise(resolve => canvas.toBlob(resolve, 'image/png'));
+      const file = new File([blob], 'ISKCON_RamNavmi_Invitation.png', { type: 'image/png' });
+      if (navigator.canShare({ files: [file] })) {
+        await navigator.share({
+          title: 'ISKCON Ram Navmi 2025 — Invitation QR',
+          text: waText,
+          files: [file],
+        });
+        return;
+      }
+    } catch (e) {
+      if (e.name !== 'AbortError') console.log('Web Share failed, trying fallback', e);
+    }
+  }
+
+  // Fallback for desktop: download image + open WhatsApp Web
+  downloadQRImage();
+  setTimeout(() => {
+    const btn = document.getElementById('wa-share-btn');
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ QR Downloaded!';
+    btn.style.background = '#2E7D32';
+    // Open WhatsApp Web with just the text
+    window.open('https://wa.me/?text=' + encodeURIComponent(waText), '_blank');
+    setTimeout(() => { btn.innerHTML = orig; btn.style.background = '#25D366'; }, 3000);
+  }, 800);
+}
+
+// ══════════════════════════════════════════════
+//  REGISTER FLOW
+// ══════════════════════════════════════════════
+let regStr = null, regScan = false;
+
+function goStep(n) {
+  [1,2,3,4].forEach(i => {
+    const e = document.getElementById('rs' + i);
+    if (e) e.style.display = i === n ? 'block' : 'none';
+  });
+}
+
+function updatePreview() {
+  const n = parseInt(document.getElementById('fp').value);
+  const pv = document.getElementById('fprev');
+  if (!n) { pv.style.display = 'none'; return; }
+  pv.style.display = 'block';
+  document.getElementById('fpn').textContent = n;
+  document.getElementById('fpl').textContent = n === 1 ? 'member' : 'members';
+  document.getElementById('fpa').textContent = '₹' + (n * 20);
+}
+
+async function startRegCam() {
+  try {
+    regStr = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    const v = document.getElementById('rv');
+    v.srcObject = regStr; v.style.display = 'block';
+    document.getElementById('rph').style.display = 'none';
+    document.getElementById('rc').style.display = 'block';
+    document.getElementById('rb').style.display = 'block';
+    document.getElementById('rcb').style.display = 'none';
+    v.play(); regScan = true; scanRegF();
+  } catch { alert('Camera not available. Please tap "Fill Form Directly".'); }
+}
+function scanRegF() {
+  if (!regScan) return;
+  const v = document.getElementById('rv'), c = document.getElementById('rcan');
+  if (v.readyState === v.HAVE_ENOUGH_DATA) {
+    c.width = v.videoWidth; c.height = v.videoHeight;
+    const ctx = c.getContext('2d'); ctx.drawImage(v, 0, 0);
+    const d = jsQR(ctx.getImageData(0, 0, c.width, c.height).data, c.width, c.height);
+    if (d) {
+      regScan = false; stopRegCam();
+      if (d.data.includes('register=1') || d.data.includes('ISKCON_RAMNAVMI') || d.data === INV) { goStep(2); }
+      else { alert('Invalid QR. Scan the event invitation QR.'); document.getElementById('rcb').style.display = 'flex'; }
+      return;
+    }
+  }
+  requestAnimationFrame(scanRegF);
+}
+function stopRegCam() {
+  if (regStr) { regStr.getTracks().forEach(t => t.stop()); regStr = null; }
+  document.getElementById('rv').style.display = 'none';
+  document.getElementById('rph').style.display = 'flex';
+  document.getElementById('rc').style.display = 'none';
+}
+function skipScan() { stopRegCam(); goStep(2); }
+
+function goPayment() {
+  const name = document.getElementById('fn').value.trim();
+  const addr = document.getElementById('fa').value.trim();
+  const mob  = document.getElementById('fm').value.trim();
+  const pers = document.getElementById('fp').value;
+  let ok = true;
+  const v = (id, cond) => { document.getElementById(id).style.display = cond ? 'none' : 'block'; if (!cond) ok = false; };
+  v('en', name.length >= 2); v('ea', addr.length >= 4); v('em', /^\d{10}$/.test(mob)); v('ep', !!pers);
+  if (!ok) return;
+  const n = parseInt(pers), amt = n * 20;
+  document.getElementById('pamt').textContent = '₹' + amt;
+  document.getElementById('pnote').textContent = '₹20 × ' + n + ' member' + (n > 1 ? 's' : '');
+  document.getElementById('upi-qr').innerHTML = '';
+  const upiStr = `upi://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR&tn=RamNavmi${n}Members`;
+  new QRCode(document.getElementById('upi-qr'), { text: upiStr, width: 160, height: 160, colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H });
+  goStep(3);
+}
+function openUPI(app) {
+  document.querySelectorAll('.ub').forEach(b => b.classList.remove('sel')); event.target.classList.add('sel');
+  const n = parseInt(document.getElementById('fp').value), amt = n * 20;
+  const urls = {
+    gpay:    `tez://upi/pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    phonepe: `phonepe://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    paytm:   `paytmmp://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    bhim:    `upi://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+  };
+  window.location.href = urls[app];
+}
+
+async function confirmReg() {
+  const name = document.getElementById('fn').value.trim();
+  const addr = document.getElementById('fa').value.trim();
+  const mob  = document.getElementById('fm').value.trim();
+  const pers = parseInt(document.getElementById('fp').value);
+  const amt  = pers * 20;
+
+  const btn = document.getElementById('confirm-btn');
+  btn.innerHTML = '<div class="spinner"></div> Saving to database...';
+  btn.disabled = true;
+
+  try {
+    // ── POST TO FLASK → SAVES IN MYSQL ──
+    const resp = await apiFetch('/api/register', {
+      method: 'POST',
+      body: JSON.stringify({ name, address: addr, mobile: mob, persons: pers, paid: amt }),
+    });
+
+    if (!resp.success) throw new Error(resp.error || 'Registration failed');
+
+    const token = resp.token;
+
+    // Show confirmation
+    document.getElementById('ctok').textContent = '#' + token;
+    document.getElementById('cpr').textContent  = pers;
+    document.getElementById('cqrsub').innerHTML = pers > 1
+      ? `Valid for your family of <strong style="color:var(--sfl);">${pers} members</strong> — scan ONCE at gate`
+      : `Valid for <strong style="color:var(--sfl);">1 person</strong> — scan at gate`;
+    document.getElementById('chow').textContent = pers + ' person' + (pers > 1 ? 's' : '');
+    document.getElementById('csumm').innerHTML = `
+      <div class="sr"><span class="sk">Family Head</span><span class="sv">${name}</span></div>
+      <div class="sr"><span class="sk">Address</span><span class="sv">${addr}</span></div>
+      <div class="sr"><span class="sk">Mobile</span><span class="sv">${mob}</span></div>
+      <div class="sr"><span class="sk">Family Members</span><span class="sv" style="color:var(--sf);font-size:16px;font-weight:700;">${pers} person${pers > 1 ? 's' : ''}</span></div>
+      <div class="sr"><span class="sk">Amount Paid</span><span class="sv" style="color:var(--ok);">₹${amt} ✓</span></div>
+      <div class="sr"><span class="sk">Token</span><span class="sv" style="color:var(--sf);">#${token}</span></div>
+      <div class="sr"><span class="sk">Saved to</span><span class="sv" style="color:#1565C0;">🗄 MySQL Database</span></div>`;
+
+    // ── GENERATE UNIQUE FAMILY ENTRY PASS QR ──
+    // This QR encodes token + family details
+    // Gate scans → calls /api/gate/scan → MySQL marks N persons attended
+    document.getElementById('cqr').innerHTML = '';
+    const passData = `PASS:${token}|N:${name}|P:${pers}|A:${amt}|M:${mob}`;
+    new QRCode(document.getElementById('cqr'), {
+      text: passData, width: 200, height: 200,
+      colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H,
+    });
+    goStep(4);
+  } catch (e) {
+    alert('Error saving to database: ' + e.message + '\n\nMake sure Flask server is running.');
+  } finally {
+    btn.innerHTML = '✅ Payment Done — Get Family Entry Pass';
+    btn.disabled = false;
+  }
+}
+
+function resetReg() {
+  ['fn','fa','fm'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('fp').value = '';
+  document.getElementById('fprev').style.display = 'none';
+  document.querySelectorAll('.er').forEach(e => e.style.display = 'none');
+  document.querySelectorAll('.ub').forEach(b => b.classList.remove('sel'));
+  stopRegCam();
+  document.getElementById('rcb').style.display = 'flex';
+  document.getElementById('rph').style.display = 'flex';
+  goStep(1);
+}
+
+// ══════════════════════════════════════════════
+//  GATE
+// ══════════════════════════════════════════════
+let gateStr = null, gateScan = false;
+
+async function loadGateStats() {
+  try {
+    const s = await apiFetch('/api/stats');
+    document.getElementById('g-fam').textContent  = s.attended_families;
+    document.getElementById('g-fams').textContent = s.attended_families === 1 ? 'family' : 'families';
+    document.getElementById('g-pers').textContent = s.attended_persons;
+    document.getElementById('g-perss').textContent= s.attended_persons === 1 ? 'person counted' : 'persons counted';
+    document.getElementById('g-reg').textContent  = s.registered_families;
+    document.getElementById('g-pend').textContent = s.pending_families;
+  } catch {}
+}
+
+async function startGateCam() {
+  try {
+    gateStr = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    const v = document.getElementById('gv');
+    v.srcObject = gateStr; v.style.display = 'block';
+    document.getElementById('gph').style.display = 'none';
+    document.getElementById('gc').style.display = 'block';
+    document.getElementById('gb').style.display = 'block';
+    document.getElementById('gsb').style.display = 'none';
+    document.getElementById('gstb').style.display = 'flex';
+    v.play(); gateScan = true; scanGateF();
+  } catch { alert('Camera not available.'); }
+}
+function scanGateF() {
+  if (!gateScan) return;
+  const v = document.getElementById('gv'), c = document.getElementById('gcan');
+  if (v.readyState === v.HAVE_ENOUGH_DATA) {
+    c.width = v.videoWidth; c.height = v.videoHeight;
+    const ctx = c.getContext('2d'); ctx.drawImage(v, 0, 0);
+    const d = jsQR(ctx.getImageData(0, 0, c.width, c.height).data, c.width, c.height);
+    if (d) {
+      gateScan = false;
+      processGate(d.data).then(() => {
+        setTimeout(() => { if (gateStr) { gateScan = true; scanGateF(); } }, 3500);
+      });
+      return;
+    }
+  }
+  requestAnimationFrame(scanGateF);
+}
+function stopGateCam() {
+  gateScan = false;
+  if (gateStr) { gateStr.getTracks().forEach(t => t.stop()); gateStr = null; }
+  document.getElementById('gv').style.display = 'none'; document.getElementById('gph').style.display = 'flex';
+  document.getElementById('gc').style.display = 'none'; document.getElementById('gb').style.display = 'none';
+  document.getElementById('gsb').style.display = 'flex'; document.getElementById('gstb').style.display = 'none';
+}
+
+async function processGate(data) {
+  const res = document.getElementById('att-res');
+  if (!data.startsWith('PASS:')) {
+    res.className = 'ar rer';
+    res.innerHTML = `<span class="ri">❌</span><div class="rn2">Invalid QR</div><div class="rd">Not a valid family entry pass.</div>`;
+    res.style.display = 'block'; return;
+  }
+  const tok  = (data.match(/PASS:(\d+)/)      || [])[1];
+  const name = (data.match(/\|N:([^|]+)/)     || [])[1] || 'Unknown';
+  const pers = parseInt((data.match(/\|P:(\d+)/) || [])[1] || '1');
+  const amt  = parseInt((data.match(/\|A:(\d+)/) || [])[1] || '0');
+  const mob  = (data.match(/\|M:(\d+)/)       || [])[1] || '';
+
+  res.className = 'ar';
+  res.innerHTML = `<span class="ri">⏳</span><div class="rn2">Checking database...</div>`;
+  res.style.display = 'block';
+
+  try {
+    // ── POST TO FLASK → MYSQL MARKS ATTENDANCE ──
+    const resp = await apiFetch('/api/gate/scan', {
+      method: 'POST',
+      body: JSON.stringify({ token: tok, name, persons: pers, paid: amt, mobile: mob }),
+    });
+
+    if (resp.status === 'duplicate') {
+      res.className = 'ar rdu';
+      res.innerHTML = `<span class="ri">⚠️</span>
+        <div class="rn2">${name}</div>
+        <div style="font-family:'Crimson Pro',serif;font-size:44px;font-weight:700;color:#1565C0;line-height:1;margin:4px 0;">#${tok}</div>
+        <div class="rd">Already entered at <strong>${resp.gate_time}</strong><br>${resp.persons} member${resp.persons > 1 ? 's' : ''} were counted at that time.</div>`;
+    } else if (resp.status === 'not_found') {
+      res.className = 'ar rer';
+      res.innerHTML = `<span class="ri">❌</span><div class="rn2">Not Found</div><div class="rd">${resp.message}</div>`;
+    } else if (resp.status === 'success') {
+      // ── SUCCESS: N persons marked in MySQL ──
+      res.className = 'ar rok';
+      res.innerHTML = `
+        <span class="ri">✅</span>
+        <div class="rn2">${name}</div>
+        <div style="font-family:'Crimson Pro',serif;font-size:52px;font-weight:700;color:var(--sf);line-height:1;margin:2px 0;">#${tok}</div>
+        <div class="pr" style="margin:12px auto;">
+          <div class="pr-n">${pers}</div>
+          <div class="pr-l">Member${pers > 1 ? 's' : ''}</div>
+        </div>
+        <div style="font-size:14px;font-weight:700;color:var(--ok);margin-bottom:6px;">🙏 Family Entry Granted</div>
+        <div class="rd">${pers} person${pers > 1 ? 's' : ''} added to attendance in MySQL · Paid ₹${amt} · ${resp.gate_time}</div>`;
+      loadGateStats();
+      loadAttLog();
+    } else {
+      res.className = 'ar rer';
+      res.innerHTML = `<span class="ri">❌</span><div class="rn2">Error</div><div class="rd">${resp.error || 'Unknown error'}</div>`;
+    }
+  } catch (e) {
+    res.className = 'ar rer';
+    res.innerHTML = `<span class="ri">📶</span><div class="rn2">Server Error</div><div class="rd">Cannot reach Flask. Check WiFi / server.</div>`;
+  }
+}
+
+async function loadAttLog() {
+  try {
+    const data = await apiFetch('/api/attendance');
+    const el = document.getElementById('att-log');
+    if (!data.attendance.length) { el.innerHTML = '<div style="text-align:center;padding:18px;color:var(--mt);font-size:14px;">No devotee families entered yet</div>'; return; }
+    el.innerHTML = data.attendance.map(a => {
+      const n = parseInt(a.persons);
+      return `<div class="ali">
+        <div class="alt">${a.token}</div>
+        <div class="ali-info"><div class="ali-name">${a.name}<span class="ppill">👥 ${n}</span></div>
+        <div class="ali-meta">₹${a.paid} · ${n} member${n > 1 ? 's' : ''} counted · MySQL ✓</div></div>
+        <div class="ali-time">${a.gate_time ? a.gate_time.slice(-5) : ''}</div>
+      </div>`;
+    }).join('');
+  } catch {}
+}
+
+// ══════════════════════════════════════════════
+//  LIVE DASHBOARD
+// ══════════════════════════════════════════════
+let prevGf = 0, prevGp = 0;
+function startDash() { updateDash(); dashInt = setInterval(updateDash, 5000); }
+function stopDash()  { if (dashInt) { clearInterval(dashInt); dashInt = null; } }
+
+async function updateDash() {
+  try {
+    const [stats, hourly, att] = await Promise.all([
+      apiFetch('/api/stats'),
+      apiFetch('/api/attendance/hourly'),
+      apiFetch('/api/attendance'),
+    ]);
+
+    const af = stats.attended_families, ap = stats.attended_persons;
+    const rf = stats.registered_families, rp = stats.registered_persons;
+    const co = stats.collection, pf = stats.pending_families;
+    const pendPers = Math.max(0, rp - ap);
+    const avgMem = af > 0 ? (ap / af).toFixed(1) : '0';
+
+    // Flash on change
+    const hg = document.getElementById('dg'), hp = document.getElementById('dp');
+    if (af !== prevGf && prevGf > 0) { hg.style.animation = 'none'; void hg.offsetWidth; hg.style.animation = 'flash .6s ease'; }
+    if (ap !== prevGp && prevGp > 0) { hp.style.animation = 'none'; void hp.offsetWidth; hp.style.animation = 'flash .6s ease'; }
+    prevGf = af; prevGp = ap;
+
+    hg.textContent = af; document.getElementById('dgsub').textContent = rf + ' registered';
+    hp.textContent = ap; document.getElementById('dpsub').textContent = rp + ' registered';
+    document.getElementById('dd').textContent    = pf;
+    document.getElementById('davg').textContent  = avgMem;
+    document.getElementById('dl').textContent    = att.attendance.length > 0 ? '#' + att.attendance[0].token : '—';
+    document.getElementById('dc').textContent    = '₹' + co.toLocaleString('en-IN');
+    document.getElementById('davgp').textContent = af > 0 ? '₹' + Math.round(co / af) : '₹0';
+    document.getElementById('dpc').textContent   = pendPers + ' persons';
+
+    // Progress bars
+    const p1 = rf > 0 ? Math.min(100, (af / rf) * 100) : 0;
+    const p2 = rp > 0 ? Math.min(100, (ap / rp) * 100) : 0;
+    const p3 = Math.min(100, (ap / 500) * 100);
+    const p4 = Math.min(100, (co / 10000) * 100);
+    document.getElementById('pb1').style.width = p1 + '%'; document.getElementById('pb1t').textContent = af + '/' + rf + ' families';
+    document.getElementById('pb2').style.width = p2 + '%'; document.getElementById('pb2t').textContent = ap + '/' + rp + ' persons';
+    document.getElementById('pb3').style.width = p3 + '%'; document.getElementById('pb3t').textContent = ap + '/500';
+    document.getElementById('pb4').style.width = p4 + '%'; document.getElementById('pb4t').textContent = '₹' + co + '/₹10,000';
+
+    // Hourly chart from MySQL
+    const nowH = new Date().getHours();
+    const hl = ['8','9','10','11','12','1','2','3','4','5','6','7','8'];
+    const hdata = hourly.hourly || {};
+    const vals = Array.from({length:13},(_,i)=> (hdata[i+8]||{families:0}).families);
+    const maxH = Math.max(...vals, 1);
+    document.getElementById('dchart').innerHTML = vals.map((c, i) => `
+      <div class="cbc">
+        <div class="cbc2">${c > 0 ? c : ''}</div>
+        <div class="cbr${(i + 8) === nowH ? ' cur' : ''}" style="height:${Math.max((c / maxH) * 100, 2)}%"></div>
+        <div class="cbl">${hl[i]}</div>
+      </div>`).join('');
+
+    // Recent entries
+    const rEl = document.getElementById('drecent');
+    if (!att.attendance.length) {
+      rEl.innerHTML = '<div style="text-align:center;padding:18px;color:var(--mt);font-size:14px;">Waiting for first Ram Navmi entry...</div>';
+    } else {
+      rEl.innerHTML = att.attendance.slice(0, 8).map(a => {
+        const n = parseInt(a.persons);
+        return `<div class="re">
+          <div class="re-tok">${a.token}</div>
+          <div class="re-info"><div class="re-name">${a.name}</div>
+          <div class="re-meta">👥 ${n} member${n > 1 ? 's' : ''} · ₹${a.paid} · MySQL ✓</div></div>
+          <div class="re-time">${a.gate_time ? a.gate_time.slice(-5) : ''}</div>
+        </div>`;
+      }).join('');
+    }
+
+    const t = new Date().toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+    document.getElementById('dref').textContent = '🔄 Fetched from MySQL at ' + t + ' · refreshes every 5s';
+  } catch {
+    document.getElementById('dref').textContent = '⚠️ Cannot reach server — retrying...';
+  }
+}
+
+// ══════════════════════════════════════════════
+//  UTILS
+// ══════════════════════════════════════════════
+function stopAllCams() {
+  gateScan = false; regScan = false;
+  if (gateStr) { gateStr.getTracks().forEach(t => t.stop()); gateStr = null; }
+  if (regStr)  { regStr.getTracks().forEach(t => t.stop());  regStr  = null; }
+}
+
+// ══════════════════════════════════════════════
+//  INIT
+// ══════════════════════════════════════════════
+// Generate invitation QR with the real URL
+// Any phone camera / Google Lens / WhatsApp QR scanner will open this URL directly
+new QRCode(document.getElementById('invite-qr'), {
+  text: REGISTER_URL,
+  width: 200, height: 200,
+  colorDark: '#1A0800', colorLight: '#fff',
+  correctLevel: QRCode.CorrectLevel.M,  // M gives smaller QR, easier to scan for URLs
+});
+// Also show the URL below the QR so admin can verify
+setTimeout(() => {
+  const urlDisplay = document.getElementById('invite-url-display');
+  if (urlDisplay) urlDisplay.textContent = REGISTER_URL;
+}, 300);
+checkServer();
+loadAdminData();
+goStep(1);
+
+// ── AUTO-OPEN REGISTRATION FORM ──
+// If page is opened via the invitation QR (URL contains ?register=1)
+// automatically switch to Register tab and go to form — no extra scan needed
+(function() {
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('register') === '1') {
+    // Switch nav to Register mode
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    const regBtn = document.querySelectorAll('.nav-btn')[1];
+    if (regBtn) regBtn.classList.add('active');
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-register').classList.add('active');
+    // Skip scanner — go directly to form
+    goStep(2);
+    // Show a welcome banner
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:58px;left:0;right:0;z-index:150;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;text-align:center;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,.3);';
+    banner.innerHTML = '🙏 Hare Krishna! Welcome — please fill the registration form below';
+    document.body.appendChild(banner);
+    setTimeout(() => banner.remove(), 4000);
+  }
+})();
+</script>
+</body>
+</html>
