@@ -223,6 +223,10 @@ def admin_required(f):
 def serve_frontend():
     return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'index.html')
 
+@app.route('/logo.png')
+def serve_logo():
+    return send_from_directory(os.path.dirname(os.path.abspath(__file__)), 'logo.png')
+
 
 # ============================================================
 #  HEALTH CHECK  (public — no auth needed)

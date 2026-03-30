@@ -194,7 +194,7 @@ canvas{display:none;}
 <div id="login-overlay" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--dp),var(--sf2));display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;">
   <div style="width:100%;max-width:360px;padding:28px 24px;background:rgba(255,255,255,.06);border-radius:24px;border:1px solid rgba(201,148,10,.25);box-shadow:0 8px 40px rgba(0,0,0,.4);margin:16px;">
     <div style="text-align:center;margin-bottom:28px;">
-      <div style="font-size:32px;margin-bottom:6px;">🕉</div>
+      <img src="/logo.png" width="80" height="80" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);margin-bottom:10px;display:block;margin-left:auto;margin-right:auto;">
       <div style="font-family:'Tiro Devanagari Sanskrit',serif;font-size:22px;color:var(--sfl);margin-bottom:4px;">Ram Navmi 2026</div>
       <div style="font-size:12px;color:rgba(255,255,255,.35);letter-spacing:1px;">ISKCON Society · Volunteer Login</div>
     </div>
@@ -220,7 +220,7 @@ canvas{display:none;}
 
 <!-- NAV -->
 <div class="nav">
-  <span class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="72" height="28" style="vertical-align:middle;margin-right:4px;"><rect width="100" height="40" rx="6" fill="none" stroke="#D4A017" stroke-width="1.5"/><text x="50" y="16" text-anchor="middle" font-family="serif" font-size="13" fill="#F0C040" font-weight="bold" letter-spacing="1">ISKCON</text><text x="50" y="30" text-anchor="middle" font-family="serif" font-size="8" fill="#FF9A3C" letter-spacing="1.5">हरे कृष्ण</text></svg> Ram Navmi</span>
+  <span class="nav-logo"><img src="/logo.png" width="32" height="32" style="vertical-align:middle;margin-right:6px;border-radius:50%;border:1px solid rgba(212,160,23,.4);"> Ram Navmi</span>
   <button id="nav-admin-btn" class="nav-btn active" onclick="setMode('admin',this)">⚙ Admin</button>
   <button id="nav-register-btn" class="nav-btn" onclick="setMode('register',this)">📝 Register</button>
   <button id="nav-gate-btn" class="nav-btn" onclick="setMode('gate',this)">🚪 Gate</button>
@@ -240,7 +240,7 @@ canvas{display:none;}
 
 <!-- ══ ADMIN ══ -->
 <div class="page active" id="page-admin">
-  <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160" width="80" height="80"><circle cx="80" cy="80" r="76" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="80" cy="80" r="64" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="5,4"/><text x="80" y="62" text-anchor="middle" font-family="Georgia,serif" font-size="26" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="30" y1="72" x2="130" y2="72" stroke="#D4A017" stroke-width="0.8" opacity="0.6"/><text x="80" y="92" text-anchor="middle" font-family="Georgia,serif" font-size="13" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="80" y="112" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#D4A017" letter-spacing="2">JAI SHRI RAM</text><line x1="30" y1="120" x2="130" y2="120" stroke="#D4A017" stroke-width="0.8" opacity="0.6"/><text x="80" y="134" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="rgba(212,160,23,0.6)" letter-spacing="1.5">॥ श्री कृष्ण शरणम् ॥</text></svg></span><div class="ph-title">ISKCON Admin Panel</div><div class="ph-sub">ISKCON Society · Ram Navmi Celebration 2026</div></div>
+  <div class="ph"><span class="ph-om"><img src="/logo.png" width="80" height="80" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 10px rgba(212,160,23,.4));"></span><div class="ph-title">ISKCON Admin Panel</div><div class="ph-sub">ISKCON Society · Ram Navmi Celebration 2026</div></div>
   <div class="s4">
     <div class="sb"><div class="sn" id="a-rfam">0</div><div class="ss" id="a-rpers">0 persons</div><div class="sl">Families Reg.</div></div>
     <div class="sb"><div class="sn" id="a-afam">0</div><div class="ss" id="a-apers">0 persons</div><div class="sl">Families Attended</div></div>
@@ -324,7 +324,7 @@ canvas{display:none;}
 <div class="page" id="page-register">
   <!-- step 1 -->
   <div id="rs1">
-    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Registration</div><div class="ph-sub">Scan the Ram Navmi invitation QR to begin</div></div>
+    <div class="ph"><span class="ph-om"><img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 8px rgba(212,160,23,.4));"></span><div class="ph-title">Ram Navmi Registration</div><div class="ph-sub">Scan the Ram Navmi invitation QR to begin</div></div>
     <div class="card" style="text-align:center;">
       <div class="ct" style="justify-content:center;">📷 Scan Invitation QR</div>
       <div class="sw">
@@ -339,7 +339,7 @@ canvas{display:none;}
   </div>
   <!-- step 2 -->
   <div id="rs2" style="display:none;">
-    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Family Details</div><div class="ph-sub">One form covers all family members</div></div>
+    <div class="ph"><span class="ph-om"><img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 8px rgba(212,160,23,.4));"></span><div class="ph-title">Family Details</div><div class="ph-sub">One form covers all family members</div></div>
     <div class="card">
       <div class="ct">👨‍👩‍👧 Family Information</div>
       <div class="fg"><label>Family Head / Full Name *</label><input type="text" id="fn" placeholder="Enter full name" autocomplete="name"><div class="er" id="en">Please enter your name</div></div>
@@ -377,7 +377,7 @@ canvas{display:none;}
   </div>
   <!-- step 3 -->
   <div id="rs3" style="display:none;">
-    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Donation</div><div class="ph-sub">₹20 per family member</div></div>
+    <div class="ph"><span class="ph-om"><img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 8px rgba(212,160,23,.4));"></span><div class="ph-title">Donation</div><div class="ph-sub">₹20 per family member</div></div>
     <div class="pyc">
       <div style="font-size:11px;color:var(--mt);letter-spacing:1px;text-transform:uppercase;">Total Amount Due</div>
       <div class="pya" id="pamt">₹20</div>
@@ -401,7 +401,7 @@ canvas{display:none;}
   </div>
   <!-- step 4 -->
   <div id="rs4" style="display:none;">
-    <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Family Pass Ready!</div><div class="ph-sub">Saved to MySQL · ISKCON Ram Navmi 2026</div></div>
+    <div class="ph"><span class="ph-om"><img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 8px rgba(212,160,23,.4));"></span><div class="ph-title">Ram Navmi Family Pass Ready!</div><div class="ph-sub">Saved to MySQL · ISKCON Ram Navmi 2026</div></div>
     <div class="card" style="text-align:center;">
       <div style="display:flex;align-items:center;justify-content:center;gap:16px;margin-bottom:16px;flex-wrap:wrap;">
         <div>
@@ -432,7 +432,7 @@ canvas{display:none;}
 
 <!-- ══ GATE ══ -->
 <div class="page" id="page-gate">
-  <div class="ph"><span class="ph-om"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" width="60" height="60"><circle cx="60" cy="60" r="57" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="2"/><circle cx="60" cy="60" r="47" fill="none" stroke="#D4A017" stroke-width="0.8" stroke-dasharray="4,3"/><text x="60" y="50" text-anchor="middle" font-family="Georgia,serif" font-size="18" fill="#F0C040" font-weight="bold" letter-spacing="2">ISKCON</text><line x1="20" y1="57" x2="100" y2="57" stroke="#D4A017" stroke-width="0.7" opacity="0.6"/><text x="60" y="72" text-anchor="middle" font-family="Georgia,serif" font-size="9" fill="#FF9A3C" letter-spacing="1">हरे कृष्ण हरे राम</text><text x="60" y="88" text-anchor="middle" font-family="Georgia,serif" font-size="8" fill="#D4A017" letter-spacing="1.5">JAI SHRI RAM</text></svg></span><div class="ph-title">Ram Navmi Gate Check-In</div><div class="ph-sub">Scan → MySQL updated → All members counted</div></div>
+  <div class="ph"><span class="ph-om"><img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 8px rgba(212,160,23,.4));"></span><div class="ph-title">Ram Navmi Gate Check-In</div><div class="ph-sub">Scan → MySQL updated → All members counted</div></div>
   <div class="s4">
     <div class="sb"><div class="sn" id="g-fam">0</div><div class="ss" id="g-fams">families</div><div class="sl">Families Entered</div></div>
     <div class="sb"><div class="sn" id="g-pers">0</div><div class="ss" id="g-perss">persons</div><div class="sl">Total Persons</div></div>
@@ -470,7 +470,7 @@ canvas{display:none;}
 <div class="page" id="page-dashboard">
   <div class="dh">
     <div style="display:flex;justify-content:center;margin-bottom:10px;">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 60" width="160" height="48"><rect width="200" height="60" rx="10" fill="rgba(212,160,23,0.08)" stroke="#D4A017" stroke-width="1.5"/><text x="100" y="26" text-anchor="middle" font-family="Georgia,serif" font-size="20" fill="#F0C040" font-weight="bold" letter-spacing="3">ISKCON</text><line x1="20" y1="33" x2="180" y2="33" stroke="#D4A017" stroke-width="0.8" opacity="0.5"/><text x="100" y="48" text-anchor="middle" font-family="Georgia,serif" font-size="10" fill="#FF9A3C" letter-spacing="2">हरे कृष्ण · JAI SHRI RAM</text></svg>
+      <img src="/logo.png" width="70" height="70" style="border-radius:50%;border:2px solid rgba(212,160,23,.5);filter:drop-shadow(0 0 12px rgba(212,160,23,.5));">
     </div>
     <div class="lb"><div class="ld"></div> 🔴 LIVE · ISKCON Ram Navmi 2026</div>
     <div class="dual-hero">
