@@ -189,17 +189,51 @@ canvas{display:none;}
 </head>
 <body>
 
+<!-- ══ LOGIN OVERLAY ══ -->
+<div id="login-overlay" style="position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,var(--dp),var(--sf2));display:flex;align-items:center;justify-content:center;font-family:'DM Sans',sans-serif;">
+  <div style="width:100%;max-width:360px;padding:28px 24px;background:rgba(255,255,255,.06);border-radius:24px;border:1px solid rgba(201,148,10,.25);box-shadow:0 8px 40px rgba(0,0,0,.4);margin:16px;">
+    <div style="text-align:center;margin-bottom:28px;">
+      <div style="font-size:32px;margin-bottom:6px;">🕉</div>
+      <div style="font-family:'Tiro Devanagari Sanskrit',serif;font-size:22px;color:var(--sfl);margin-bottom:4px;">Ram Navmi 2026</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.35);letter-spacing:1px;">ISKCON Society · Volunteer Login</div>
+    </div>
+    <div style="margin-bottom:16px;">
+      <label style="color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;display:block;margin-bottom:6px;">Username</label>
+      <input id="li-user" type="text" placeholder="e.g. admin" autocomplete="username"
+        style="width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(201,148,10,.25);border-radius:10px;padding:12px 14px;color:#fff;font-size:15px;outline:none;font-family:'DM Sans',sans-serif;"
+        onkeydown="if(event.key==='Enter')document.getElementById('li-pass').focus()">
+    </div>
+    <div style="margin-bottom:20px;">
+      <label style="color:rgba(255,255,255,.5);font-size:11px;letter-spacing:1.4px;text-transform:uppercase;display:block;margin-bottom:6px;">Password</label>
+      <input id="li-pass" type="password" placeholder="••••••••" autocomplete="current-password"
+        style="width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(201,148,10,.25);border-radius:10px;padding:12px 14px;color:#fff;font-size:15px;outline:none;font-family:'DM Sans',sans-serif;"
+        onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div id="li-err" style="display:none;color:#EF9A9A;font-size:12px;margin-bottom:12px;text-align:center;background:rgba(239,83,80,.1);border-radius:8px;padding:8px 12px;"></div>
+    <button onclick="doLogin()" id="li-btn" style="width:100%;padding:13px;border-radius:11px;border:none;background:linear-gradient(135deg,var(--sfl),var(--sf));color:#fff;font-size:15px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;">
+      🔐 Login
+    </button>
+    <div style="text-align:center;margin-top:16px;font-size:11px;color:rgba(255,255,255,.25);">Contact admin to get your login credentials</div>
+  </div>
+</div>
+
 <!-- NAV -->
 <div class="nav">
   <span class="nav-logo"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 40" width="72" height="28" style="vertical-align:middle;margin-right:4px;"><rect width="100" height="40" rx="6" fill="none" stroke="#D4A017" stroke-width="1.5"/><text x="50" y="16" text-anchor="middle" font-family="serif" font-size="13" fill="#F0C040" font-weight="bold" letter-spacing="1">ISKCON</text><text x="50" y="30" text-anchor="middle" font-family="serif" font-size="8" fill="#FF9A3C" letter-spacing="1.5">हरे कृष्ण</text></svg> Ram Navmi</span>
-  <button class="nav-btn active" onclick="setMode('admin',this)">⚙ Admin</button>
-  <button class="nav-btn" onclick="setMode('register',this)">📝 Register</button>
-  <button class="nav-btn" onclick="setMode('gate',this)">🚪 Gate</button>
-  <button class="nav-btn" onclick="setMode('dashboard',this)">📊 Live</button>
+  <button id="nav-admin-btn" class="nav-btn active" onclick="setMode('admin',this)">⚙ Admin</button>
+  <button id="nav-register-btn" class="nav-btn" onclick="setMode('register',this)">📝 Register</button>
+  <button id="nav-gate-btn" class="nav-btn" onclick="setMode('gate',this)">🚪 Gate</button>
+  <button id="nav-dashboard-btn" class="nav-btn" onclick="setMode('dashboard',this)">📊 Live</button>
+  <!-- Logged-in user info -->
+  <div id="nav-user-info" style="display:none;align-items:center;gap:6px;font-size:11px;color:rgba(255,255,255,.55);white-space:nowrap;flex-shrink:0;">
+    <span>👤 <strong id="nav-uname" style="color:var(--sfl);"></strong></span>
+    <span id="nav-role-badge" style="font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(232,98,10,.3);color:var(--sfl);font-weight:700;"></span>
+    <button onclick="doLogout()" style="padding:3px 9px;border-radius:14px;border:1px solid rgba(255,107,0,.3);background:transparent;color:rgba(255,255,255,.5);font-size:11px;cursor:pointer;">Out</button>
+  </div>
   <!-- Server status pill -->
   <div class="srv-pill srv-err" id="srv-pill" onclick="checkServer()" title="Click to recheck">
     <div class="srv-dot"></div>
-    <span id="srv-txt">Checking...</span>
+    <span id="srv-txt">...</span>
   </div>
 </div>
 
@@ -209,7 +243,8 @@ canvas{display:none;}
   <div class="s4">
     <div class="sb"><div class="sn" id="a-rfam">0</div><div class="ss" id="a-rpers">0 persons</div><div class="sl">Families Reg.</div></div>
     <div class="sb"><div class="sn" id="a-afam">0</div><div class="ss" id="a-apers">0 persons</div><div class="sl">Families Attended</div></div>
-    <div class="sb"><div class="sn" id="a-col">₹0</div><div class="ss">collected</div><div class="sl">Total Collection</div></div>
+    <div class="sb" id="a-col-box"><div class="sn" id="a-col">₹0</div><div class="ss">collected</div><div class="sl">Total Collection</div></div>
+    <div class="sb" id="a-my-families-box" style="display:none;"><div class="sn" id="a-my-fam">0</div><div class="ss" id="a-my-pers">0 persons</div><div class="sl">My Registrations</div></div>
     <div class="sb"><div class="sn" id="a-pend">0</div><div class="ss">families</div><div class="sl">Yet to Arrive</div></div>
   </div>
 
@@ -238,8 +273,49 @@ canvas{display:none;}
   </div>
 
   <div class="card">
-    <div class="ct">📋 Family Registration List <span style="font-size:12px;color:var(--mt);margin-left:auto;font-weight:400;" onclick="loadAdminData()" style="cursor:pointer;">↻ Refresh</span></div>
+    <div class="ct">📋 Family Registration List <span style="font-size:12px;color:var(--mt);margin-left:auto;font-weight:400;cursor:pointer;" onclick="loadAdminData()">↻ Refresh</span></div>
     <div id="admin-list"><div style="text-align:center;padding:20px;color:var(--mt);">Loading from database...</div></div>
+  </div>
+
+  <!-- ══ USER MANAGEMENT — Admin Only ══ -->
+  <div id="user-mgmt-section" style="display:none;">
+    <div class="card">
+      <div class="ct">📊 Collection Per Volunteer</div>
+      <div id="user-stats-list"><div style="text-align:center;padding:14px;color:var(--mt);">Loading...</div></div>
+    </div>
+
+    <div class="card">
+      <div class="ct" style="align-items:center;">👥 User Management
+        <button onclick="showAddUserForm()" style="margin-left:auto;padding:5px 12px;border-radius:8px;border:1px solid var(--sf);background:transparent;color:var(--sf);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;">+ Add User</button>
+      </div>
+
+      <!-- Add/Edit Form -->
+      <div id="user-form" style="display:none;background:var(--sfp);border-radius:12px;padding:16px;margin-bottom:14px;border:1px solid var(--bd);">
+        <div style="font-size:13px;font-weight:700;color:var(--sf);margin-bottom:12px;" id="user-form-title">Add New User</div>
+        <input type="hidden" id="uf-id" value="">
+        <div class="r2">
+          <div class="fg"><label>Username</label><input id="uf-username" type="text" placeholder="volunteer1"></div>
+          <div class="fg"><label>Password <span id="uf-pw-hint" style="font-size:10px;color:var(--mt);text-transform:none;letter-spacing:0;">(leave blank to keep)</span></label><input id="uf-password" type="password" placeholder="••••••"></div>
+        </div>
+        <div class="r2">
+          <div class="fg"><label>Full Name</label><input id="uf-name" type="text" placeholder="Prabhu Das"></div>
+          <div class="fg"><label>Mobile / UPI</label><input id="uf-mobile" type="tel" placeholder="9876543210" maxlength="10" oninput="document.getElementById('uf-upi-prev').textContent=(this.value||'mobile')+'@upi'"></div>
+        </div>
+        <div class="fg"><label>Role</label>
+          <select id="uf-role">
+            <option value="user">Volunteer (user)</option>
+            <option value="admin">Admin</option>
+          </select>
+        </div>
+        <div style="font-size:11px;color:var(--mt);margin-bottom:12px;">UPI ID: <strong id="uf-upi-prev" style="color:var(--sf);">mobile@upi</strong></div>
+        <div style="display:flex;gap:10px;">
+          <button class="btn bp bsm" onclick="saveUser()" style="flex:1;">💾 Save User</button>
+          <button class="btn bo bsm" onclick="hideUserForm()" style="flex:0 0 auto;width:auto;padding:8px 16px;">Cancel</button>
+        </div>
+      </div>
+
+      <div id="user-list"><div style="text-align:center;padding:14px;color:var(--mt);">Loading users...</div></div>
+    </div>
   </div>
 </div>
 
@@ -279,6 +355,16 @@ canvas{display:none;}
           <div class="er" id="ep">Please select</div>
         </div>
       </div>
+      <!-- Free Entry Checkbox -->
+      <div class="fg" style="margin-top:4px;">
+        <label style="display:flex;align-items:flex-start;gap:10px;cursor:pointer;text-transform:none;font-size:14px;font-weight:500;color:var(--tx);letter-spacing:0;">
+          <input type="checkbox" id="free-entry-cb" onchange="onFreeEntryChange()"
+            style="width:18px;height:18px;margin-top:2px;accent-color:var(--sf);flex-shrink:0;">
+          <span>🙏 Free Entry — Devotee / Special Guest (no payment required)</span>
+        </label>
+        <div style="font-size:11px;color:var(--mt);margin-top:3px;margin-left:28px;">Checking this skips payment and goes directly to entry pass. Person count still recorded.</div>
+      </div>
+
       <div id="fprev" style="display:none;background:linear-gradient(135deg,#FFF8E1,#FFF3CD);border:1.5px solid var(--gd);border-radius:12px;padding:14px;margin-bottom:14px;text-align:center;">
         <div style="font-size:12px;color:var(--mt);margin-bottom:4px;">ONE Ram Navmi Pass generated for your family of</div>
         <div style="font-family:'Crimson Pro',serif;font-size:42px;font-weight:700;color:var(--sf);line-height:1;" id="fpn">—</div>
@@ -429,22 +515,116 @@ canvas{display:none;}
 <!-- ══════════════ SCRIPT ══════════════ -->
 <script>
 // ══════════════════════════════════════════════
-//  CONFIG — SET YOUR FLASK SERVER IP HERE
+//  CONFIG
 // ══════════════════════════════════════════════
-// Replace with your PC's LAN IP address
-// Run: ipconfig (Windows) or ip addr (Linux) to find it
-// Example: 'http://192.168.1.105:5000'
-const API = 'https://iskonramnavmi2026-production.up.railway.app';   // ← CHANGE THIS IP
-const UPI_ID = '9426732587@upi';             // ← CHANGE YOUR UPI ID
+const API = 'https://iskonramnavmi2026-production.up.railway.app';
+const REGISTER_URL = API + '/?register=1';
+const INV = REGISTER_URL;
 
-// ── INVITATION QR ──
-// The QR code encodes a real URL so any phone camera / Google Lens
-// opens the registration form directly — no app needed.
-// This URL must point to where index.html is served on your LAN.
-// Flask serves index.html at root — just run python app.py
-// Set API to your PC's LAN IP and the QR will work on all phones
-const REGISTER_URL = API + '/?register=1';  // Flask serves index.html at root
-const INV = REGISTER_URL;  // used by built-in camera scanner check
+// ══════════════════════════════════════════════
+//  AUTH STATE
+// ══════════════════════════════════════════════
+let currentUser = null;  // { id, username, name, mobile, upi_id, role }
+
+function getUpiId() {
+  return currentUser ? currentUser.upi_id : '0000000000@upi';
+}
+
+async function doLogin() {
+  const username = document.getElementById('li-user').value.trim();
+  const password = document.getElementById('li-pass').value;
+  const btn = document.getElementById('li-btn');
+  const err = document.getElementById('li-err');
+  err.style.display = 'none';
+  if (!username || !password) { showLoginErr('Enter username and password'); return; }
+  btn.textContent = '⏳ Logging in...'; btn.disabled = true;
+  try {
+    const resp = await fetch(API + '/api/auth/login', {
+      method: 'POST', credentials: 'include',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password }),
+    });
+    const data = await resp.json();
+    if (!resp.ok) { showLoginErr(data.error || 'Login failed'); return; }
+    onLoginSuccess(data.user);
+  } catch(e) {
+    showLoginErr('Cannot reach server. Check connection.');
+  } finally {
+    btn.textContent = '🔐 Login'; btn.disabled = false;
+  }
+}
+
+function showLoginErr(msg) {
+  const err = document.getElementById('li-err');
+  err.textContent = msg; err.style.display = 'block';
+}
+
+function onLoginSuccess(user) {
+  currentUser = user;
+  document.getElementById('login-overlay').style.display = 'none';
+  const ni = document.getElementById('nav-user-info');
+  ni.style.display = 'flex';
+  document.getElementById('nav-uname').textContent = user.name;
+  document.getElementById('nav-role-badge').textContent = user.role === 'admin' ? '⚙ Admin' : '👤 Volunteer';
+  applyRoleVisibility();
+  // If auto-register flag set from URL
+  if (sessionStorage.getItem('auto_register') === '1') {
+    sessionStorage.removeItem('auto_register');
+    const regBtn = document.getElementById('nav-register-btn');
+    setMode('register', regBtn);
+    goStep(2);
+  } else {
+    loadAdminData();
+  }
+  checkServer();
+  new QRCode(document.getElementById('invite-qr'), {
+    text: REGISTER_URL, width: 200, height: 200,
+    colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.M,
+  });
+  setTimeout(() => {
+    const u = document.getElementById('invite-url-display');
+    if (u) u.textContent = REGISTER_URL;
+  }, 300);
+}
+
+async function doLogout() {
+  try { await fetch(API + '/api/auth/logout', { method: 'POST', credentials: 'include' }); } catch {}
+  currentUser = null;
+  document.getElementById('login-overlay').style.display = 'flex';
+  document.getElementById('login-overlay').style.flexDirection = 'column';
+  document.getElementById('login-overlay').style.alignItems = 'center';
+  document.getElementById('login-overlay').style.justifyContent = 'center';
+  document.getElementById('nav-user-info').style.display = 'none';
+  document.getElementById('li-pass').value = '';
+  stopDash();
+}
+
+async function checkAuthState() {
+  try {
+    const resp = await fetch(API + '/api/auth/me', { credentials: 'include' });
+    const data = await resp.json();
+    if (data.authenticated) { onLoginSuccess(data.user); }
+  } catch {}
+}
+
+function applyRoleVisibility() {
+  const isAdmin = currentUser && currentUser.role === 'admin';
+  // Admin tab — only admins
+  document.getElementById('nav-admin-btn').style.display = isAdmin ? '' : 'none';
+  // If non-admin is on admin page, redirect to register
+  if (!isAdmin && document.getElementById('page-admin').classList.contains('active')) {
+    setMode('register', document.getElementById('nav-register-btn'));
+  }
+  // Collection box (admin only)
+  const colBox = document.getElementById('a-col-box');
+  if (colBox) colBox.style.display = isAdmin ? '' : 'none';
+  // My registrations box (non-admin)
+  const myBox = document.getElementById('a-my-families-box');
+  if (myBox) myBox.style.display = isAdmin ? 'none' : '';
+  // User management section (admin only)
+  const umSection = document.getElementById('user-mgmt-section');
+  if (umSection) umSection.style.display = isAdmin ? '' : 'none';
+}
 
 // ══════════════════════════════════════════════
 //  API HELPER
@@ -452,10 +632,19 @@ const INV = REGISTER_URL;  // used by built-in camera scanner check
 async function apiFetch(path, opts = {}) {
   const url = API + path;
   const defaults = {
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json' },
     ...opts,
   };
   const res = await fetch(url, defaults);
+  if (res.status === 401) {
+    // Session expired
+    currentUser = null;
+    document.getElementById('login-overlay').style.display = 'flex';
+    document.getElementById('nav-user-info').style.display = 'none';
+    stopDash();
+    throw new Error('Session expired. Please log in again.');
+  }
   return res.json();
 }
 
@@ -506,30 +695,50 @@ async function loadAdminData() {
     document.getElementById('a-rpers').textContent = stats.registered_persons + ' persons';
     document.getElementById('a-afam').textContent  = stats.attended_families;
     document.getElementById('a-apers').textContent = stats.attended_persons + ' persons';
-    document.getElementById('a-col').textContent   = '₹' + stats.collection;
+    if (stats.collection !== undefined) {
+      document.getElementById('a-col').textContent = '₹' + stats.collection;
+    }
     document.getElementById('a-pend').textContent  = stats.pending_families;
+
+    // Non-admin: show their own registration count
+    if (currentUser && currentUser.role !== 'admin') {
+      try {
+        const ms = await apiFetch('/api/my-stats');
+        document.getElementById('a-my-fam').textContent  = ms.families;
+        document.getElementById('a-my-pers').textContent = ms.persons + ' persons';
+      } catch {}
+    }
 
     const data = await apiFetch('/api/registrations');
     const el = document.getElementById('admin-list');
     if (!data.registrations.length) {
       el.innerHTML = '<div style="text-align:center;padding:18px;color:var(--mt);">No registrations yet in database</div>';
-      return;
+    } else {
+      const isAdmin = currentUser && currentUser.role === 'admin';
+      el.innerHTML = data.registrations.map(r => {
+        const n = parseInt(r.persons);
+        const badge = r.attended
+          ? `<span style="background:#E8F5E9;color:#2E7D32;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">✓ Entered</span>`
+          : `<span style="background:#FFF3E0;color:#E65100;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">Pending</span>`;
+        const ftag = n > 1
+          ? `<span style="background:rgba(232,98,10,.12);color:var(--sf);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👨‍👩‍👧 ${n}</span>`
+          : `<span style="background:rgba(201,148,10,.12);color:var(--gd);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👤 1</span>`;
+        const freeBadge = r.free_entry ? `<span style="background:#E8F5E9;color:#2E7D32;font-size:9px;padding:1px 6px;border-radius:8px;font-weight:600;margin-left:4px;">Free</span>` : '';
+        const byUser = isAdmin && r.registered_by_name
+          ? `<span style="font-size:10px;color:var(--mt);"> · by ${r.registered_by_name}</span>` : '';
+        return `<div class="ali"><div class="alt">${r.token}</div>
+          <div class="ali-info"><div class="ali-name">${r.name}${ftag}${freeBadge}</div>
+          <div class="ali-meta">₹${r.paid} · ${r.reg_at}${byUser}</div></div>${badge}</div>`;
+      }).join('');
     }
-    el.innerHTML = data.registrations.map(r => {
-      const n = parseInt(r.persons);
-      const badge = r.attended
-        ? `<span style="background:#E8F5E9;color:#2E7D32;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">✓ Entered</span>`
-        : `<span style="background:#FFF3E0;color:#E65100;font-size:10px;padding:3px 9px;border-radius:20px;font-weight:600;">Pending</span>`;
-      const ftag = n > 1
-        ? `<span style="background:rgba(232,98,10,.12);color:var(--sf);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👨‍👩‍👧 ${n}</span>`
-        : `<span style="background:rgba(201,148,10,.12);color:var(--gd);font-size:10px;padding:2px 7px;border-radius:10px;font-weight:700;margin-left:4px;">👤 1</span>`;
-      return `<div class="ali"><div class="alt">${r.token}</div>
-        <div class="ali-info"><div class="ali-name">${r.name}${ftag}</div>
-        <div class="ali-meta">₹${r.paid} · ${r.reg_at}</div></div>${badge}</div>`;
-    }).join('');
+
+    // Admin: load user management
+    if (currentUser && currentUser.role === 'admin') {
+      loadUserManagement();
+    }
   } catch(e) {
     document.getElementById('admin-list').innerHTML =
-      `<div style="text-align:center;padding:18px;color:#c62828;">⚠️ Cannot connect to server. Check Flask is running.</div>`;
+      `<div style="text-align:center;padding:18px;color:#c62828;">⚠️ Cannot connect to server.</div>`;
   }
 }
 
@@ -709,12 +918,21 @@ function goStep(n) {
 
 function updatePreview() {
   const n = parseInt(document.getElementById('fp').value);
+  const isFree = document.getElementById('free-entry-cb').checked;
   const pv = document.getElementById('fprev');
   if (!n) { pv.style.display = 'none'; return; }
   pv.style.display = 'block';
   document.getElementById('fpn').textContent = n;
   document.getElementById('fpl').textContent = n === 1 ? 'member' : 'members';
-  document.getElementById('fpa').textContent = '₹' + (n * 20);
+  document.getElementById('fpa').textContent = isFree ? '₹0 (Free Entry)' : '₹' + (n * 20);
+}
+
+function onFreeEntryChange() {
+  const isFree = document.getElementById('free-entry-cb').checked;
+  document.getElementById('pay-btn').textContent = isFree
+    ? '🙏 Generate Free Entry Pass →'
+    : 'Continue to Payment →';
+  updatePreview();
 }
 
 async function startRegCam() {
@@ -762,49 +980,56 @@ function goPayment() {
   const v = (id, cond) => { document.getElementById(id).style.display = cond ? 'none' : 'block'; if (!cond) ok = false; };
   v('en', name.length >= 2); v('ea', addr.length >= 4); v('em', /^\d{10}$/.test(mob)); v('ep', !!pers);
   if (!ok) return;
+  const isFree = document.getElementById('free-entry-cb').checked;
+  if (isFree) {
+    // Skip payment step entirely — go directly to confirm
+    confirmReg(true);
+    return;
+  }
   const n = parseInt(pers), amt = n * 20;
   document.getElementById('pamt').textContent = '₹' + amt;
   document.getElementById('pnote').textContent = '₹20 × ' + n + ' member' + (n > 1 ? 's' : '');
   document.getElementById('upi-qr').innerHTML = '';
-  const upiStr = `upi://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR&tn=RamNavmi${n}Members`;
+  const upiId = getUpiId();
+  const upiStr = `upi://pay?pa=${upiId}&pn=ISKCONSociety&am=${amt}&cu=INR&tn=RamNavmi${n}Members`;
   new QRCode(document.getElementById('upi-qr'), { text: upiStr, width: 160, height: 160, colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H });
   goStep(3);
 }
 function openUPI(app) {
   document.querySelectorAll('.ub').forEach(b => b.classList.remove('sel')); event.target.classList.add('sel');
   const n = parseInt(document.getElementById('fp').value), amt = n * 20;
+  const upiId = getUpiId();
   const urls = {
-    gpay:    `tez://upi/pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
-    phonepe: `phonepe://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
-    paytm:   `paytmmp://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
-    bhim:    `upi://pay?pa=${UPI_ID}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    gpay:    `tez://upi/pay?pa=${upiId}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    phonepe: `phonepe://pay?pa=${upiId}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    paytm:   `paytmmp://pay?pa=${upiId}&pn=ISKCONSociety&am=${amt}&cu=INR`,
+    bhim:    `upi://pay?pa=${upiId}&pn=ISKCONSociety&am=${amt}&cu=INR`,
   };
   window.location.href = urls[app];
 }
 
-async function confirmReg() {
-  const name = document.getElementById('fn').value.trim();
-  const addr = document.getElementById('fa').value.trim();
-  const mob  = document.getElementById('fm').value.trim();
-  const pers = parseInt(document.getElementById('fp').value);
-  const amt  = pers * 20;
+async function confirmReg(freeEntry = false) {
+  const name    = document.getElementById('fn').value.trim();
+  const addr    = document.getElementById('fa').value.trim();
+  const mob     = document.getElementById('fm').value.trim();
+  const pers    = parseInt(document.getElementById('fp').value);
+  const isFree  = freeEntry || document.getElementById('free-entry-cb').checked;
+  const amt     = isFree ? 0 : pers * 20;
 
   const btn = document.getElementById('confirm-btn');
   btn.innerHTML = '<div class="spinner"></div> Saving to database...';
   btn.disabled = true;
 
   try {
-    // ── POST TO FLASK → SAVES IN MYSQL ──
     const resp = await apiFetch('/api/register', {
       method: 'POST',
-      body: JSON.stringify({ name, address: addr, mobile: mob, persons: pers, paid: amt }),
+      body: JSON.stringify({ name, address: addr, mobile: mob, persons: pers, paid: amt, free_entry: isFree }),
     });
 
     if (!resp.success) throw new Error(resp.error || 'Registration failed');
 
     const token = resp.token;
 
-    // Show confirmation
     document.getElementById('ctok').textContent = '#' + token;
     document.getElementById('cpr').textContent  = pers;
     document.getElementById('cqrsub').innerHTML = pers > 1
@@ -816,20 +1041,16 @@ async function confirmReg() {
       <div class="sr"><span class="sk">Address</span><span class="sv">${addr}</span></div>
       <div class="sr"><span class="sk">Mobile</span><span class="sv">${mob}</span></div>
       <div class="sr"><span class="sk">Family Members</span><span class="sv" style="color:var(--sf);font-size:16px;font-weight:700;">${pers} person${pers > 1 ? 's' : ''}</span></div>
-      <div class="sr"><span class="sk">Amount Paid</span><span class="sv" style="color:var(--ok);">₹${amt} ✓</span></div>
+      <div class="sr"><span class="sk">Amount Paid</span><span class="sv" style="color:${isFree ? '#2E7D32' : 'var(--ok)'};">${isFree ? '🙏 Free Entry' : '₹'+amt+' ✓'}</span></div>
       <div class="sr"><span class="sk">Token</span><span class="sv" style="color:var(--sf);">#${token}</span></div>
       <div class="sr"><span class="sk">Saved to</span><span class="sv" style="color:#1565C0;">🗄 MySQL Database</span></div>`;
 
-    // ── GENERATE UNIQUE FAMILY ENTRY PASS QR ──
-    // This QR encodes token + family details
-    // Gate scans → calls /api/gate/scan → MySQL marks N persons attended
     document.getElementById('cqr').innerHTML = '';
     const passData = `PASS:${token}|N:${name}|P:${pers}|A:${amt}|M:${mob}`;
     new QRCode(document.getElementById('cqr'), {
       text: passData, width: 200, height: 200,
       colorDark: '#1A0800', colorLight: '#fff', correctLevel: QRCode.CorrectLevel.H,
     });
-    // Store for WhatsApp share
     window._lastPass = { token, name, pers, amt, mob };
 
     goStep(4);
@@ -885,6 +1106,8 @@ async function sharePassToWhatsApp() {
 function resetReg() {
   ['fn','fa','fm'].forEach(id => document.getElementById(id).value = '');
   document.getElementById('fp').value = '';
+  document.getElementById('free-entry-cb').checked = false;
+  document.getElementById('pay-btn').textContent = 'Continue to Payment →';
   document.getElementById('fprev').style.display = 'none';
   document.querySelectorAll('.er').forEach(e => e.style.display = 'none');
   document.querySelectorAll('.ub').forEach(b => b.classList.remove('sel'));
@@ -1129,7 +1352,8 @@ async function updateDash() {
 
     const af = stats.attended_families, ap = stats.attended_persons;
     const rf = stats.registered_families, rp = stats.registered_persons;
-    const co = stats.collection, pf = stats.pending_families;
+    const co = stats.collection !== undefined ? stats.collection : null;
+    const pf = stats.pending_families;
     const pendPers = Math.max(0, rp - ap);
     const avgMem = af > 0 ? (ap / af).toFixed(1) : '0';
 
@@ -1144,19 +1368,24 @@ async function updateDash() {
     document.getElementById('dd').textContent    = pf;
     document.getElementById('davg').textContent  = avgMem;
     document.getElementById('dl').textContent    = att.attendance.length > 0 ? '#' + att.attendance[0].token : '—';
-    document.getElementById('dc').textContent    = '₹' + co.toLocaleString('en-IN');
-    document.getElementById('davgp').textContent = af > 0 ? '₹' + Math.round(co / af) : '₹0';
+    if (co !== null) {
+      document.getElementById('dc').textContent    = '₹' + co.toLocaleString('en-IN');
+      document.getElementById('davgp').textContent = af > 0 ? '₹' + Math.round(co / af) : '₹0';
+    } else {
+      document.getElementById('dc').textContent    = '—';
+      document.getElementById('davgp').textContent = '—';
+    }
     document.getElementById('dpc').textContent   = pendPers + ' persons';
 
     // Progress bars
     const p1 = rf > 0 ? Math.min(100, (af / rf) * 100) : 0;
     const p2 = rp > 0 ? Math.min(100, (ap / rp) * 100) : 0;
     const p3 = Math.min(100, (ap / 500) * 100);
-    const p4 = Math.min(100, (co / 10000) * 100);
+    const p4 = co !== null ? Math.min(100, (co / 10000) * 100) : 0;
     document.getElementById('pb1').style.width = p1 + '%'; document.getElementById('pb1t').textContent = af + '/' + rf + ' families';
     document.getElementById('pb2').style.width = p2 + '%'; document.getElementById('pb2t').textContent = ap + '/' + rp + ' persons';
     document.getElementById('pb3').style.width = p3 + '%'; document.getElementById('pb3t').textContent = ap + '/500';
-    document.getElementById('pb4').style.width = p4 + '%'; document.getElementById('pb4t').textContent = '₹' + co + '/₹10,000';
+    document.getElementById('pb4').style.width = p4 + '%'; document.getElementById('pb4t').textContent = co !== null ? '₹' + co + '/₹10,000' : 'Admin only';
 
     // Hourly chart from MySQL
     const nowH = new Date().getHours();
@@ -1204,47 +1433,144 @@ function stopAllCams() {
 }
 
 // ══════════════════════════════════════════════
+//  USER MANAGEMENT
+// ══════════════════════════════════════════════
+async function loadUserManagement() {
+  if (!currentUser || currentUser.role !== 'admin') return;
+  await Promise.all([loadUserStats(), loadUserList()]);
+}
+
+async function loadUserStats() {
+  try {
+    const data = await apiFetch('/api/admin/user-stats');
+    const el = document.getElementById('user-stats-list');
+    if (!data.user_stats || !data.user_stats.length) {
+      el.innerHTML = '<div style="text-align:center;padding:10px;color:var(--mt);">No data</div>'; return;
+    }
+    el.innerHTML = data.user_stats.map(u => `
+      <div class="ali">
+        <div class="alt" style="width:40px;height:40px;font-size:11px;">${u.username.slice(0,3).toUpperCase()}</div>
+        <div class="ali-info">
+          <div class="ali-name">${u.name} <span style="font-size:10px;color:var(--mt);">@${u.username}</span></div>
+          <div class="ali-meta">👨‍👩‍👧 ${u.families_registered} families · 👥 ${u.persons_registered} persons · 📱 ${u.mobile}</div>
+        </div>
+        <div style="font-family:'Crimson Pro',serif;font-size:18px;font-weight:700;color:#2E7D32;">₹${u.collection}</div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('user-stats-list').innerHTML = `<div style="color:#c62828;padding:8px;">Error: ${e.message}</div>`;
+  }
+}
+
+async function loadUserList() {
+  try {
+    const data = await apiFetch('/api/users');
+    const el = document.getElementById('user-list');
+    if (!data.users || !data.users.length) {
+      el.innerHTML = '<div style="text-align:center;padding:10px;color:var(--mt);">No users</div>'; return;
+    }
+    el.innerHTML = data.users.map(u => `
+      <div class="ali">
+        <div class="alt" style="width:38px;height:38px;font-size:16px;">${u.role === 'admin' ? '⚙' : '👤'}</div>
+        <div class="ali-info">
+          <div class="ali-name">${u.name} <span style="font-size:10px;color:var(--mt);">@${u.username}</span>
+            <span style="font-size:9px;padding:1px 6px;border-radius:8px;margin-left:4px;
+              background:${u.role === 'admin' ? 'rgba(232,98,10,.15)' : 'rgba(46,125,50,.12)'};
+              color:${u.role === 'admin' ? 'var(--sf)' : '#2E7D32'};font-weight:700;">${u.role}</span>
+          </div>
+          <div class="ali-meta">📱 ${u.mobile} · UPI: ${u.upi_id}</div>
+        </div>
+        <div style="display:flex;gap:5px;">
+          <button onclick="editUser(${u.id},'${u.username}','${u.name.replace(/'/g,"\\'")}','${u.mobile}','${u.role}')"
+            style="padding:5px 10px;font-size:11px;border-radius:7px;border:1px solid var(--sf);background:transparent;color:var(--sf);cursor:pointer;">Edit</button>
+          ${u.id !== (currentUser && currentUser.id) ? `
+          <button onclick="deleteUser(${u.id},'${u.name.replace(/'/g,"\\'")}')"
+            style="padding:5px 10px;font-size:11px;border-radius:7px;border:1px solid #c62828;background:transparent;color:#c62828;cursor:pointer;">Del</button>` : ''}
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('user-list').innerHTML = `<div style="color:#c62828;padding:8px;">Error: ${e.message}</div>`;
+  }
+}
+
+function showAddUserForm() {
+  document.getElementById('uf-id').value = '';
+  document.getElementById('uf-username').value = '';
+  document.getElementById('uf-username').disabled = false;
+  document.getElementById('uf-password').value = '';
+  document.getElementById('uf-name').value = '';
+  document.getElementById('uf-mobile').value = '';
+  document.getElementById('uf-role').value = 'user';
+  document.getElementById('uf-upi-prev').textContent = 'mobile@upi';
+  document.getElementById('uf-pw-hint').style.display = 'none';
+  document.getElementById('user-form-title').textContent = 'Add New User';
+  document.getElementById('user-form').style.display = 'block';
+}
+
+function editUser(id, username, name, mobile, role) {
+  document.getElementById('uf-id').value = id;
+  document.getElementById('uf-username').value = username;
+  document.getElementById('uf-username').disabled = true;
+  document.getElementById('uf-password').value = '';
+  document.getElementById('uf-name').value = name;
+  document.getElementById('uf-mobile').value = mobile;
+  document.getElementById('uf-role').value = role;
+  document.getElementById('uf-upi-prev').textContent = mobile + '@upi';
+  document.getElementById('uf-pw-hint').style.display = '';
+  document.getElementById('user-form-title').textContent = 'Edit User: ' + username;
+  document.getElementById('user-form').style.display = 'block';
+}
+
+function hideUserForm() { document.getElementById('user-form').style.display = 'none'; }
+
+async function saveUser() {
+  const id       = document.getElementById('uf-id').value;
+  const username = document.getElementById('uf-username').value.trim();
+  const password = document.getElementById('uf-password').value;
+  const name     = document.getElementById('uf-name').value.trim();
+  const mobile   = document.getElementById('uf-mobile').value.trim();
+  const role     = document.getElementById('uf-role').value;
+  if (!name || !mobile) { alert('Name and Mobile are required.'); return; }
+  if (!/^\d{10}$/.test(mobile)) { alert('Mobile must be exactly 10 digits.'); return; }
+  try {
+    if (id) {
+      const body = { name, mobile, role };
+      if (password) body.password = password;
+      const resp = await apiFetch('/api/users/' + id, { method: 'PUT', body: JSON.stringify(body) });
+      if (!resp.success) throw new Error(resp.error || 'Update failed');
+    } else {
+      if (!username || !password) { alert('Username and Password are required for new users.'); return; }
+      const resp = await apiFetch('/api/users', { method: 'POST', body: JSON.stringify({ username, password, name, mobile, role }) });
+      if (!resp.success) throw new Error(resp.error || 'Create failed');
+    }
+    hideUserForm();
+    loadUserManagement();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+async function deleteUser(id, name) {
+  if (!confirm(`Delete user "${name}"? This cannot be undone.`)) return;
+  try {
+    const resp = await apiFetch('/api/users/' + id, { method: 'DELETE' });
+    if (!resp.success) throw new Error(resp.error || 'Delete failed');
+    loadUserManagement();
+  } catch(e) { alert('Error: ' + e.message); }
+}
+
+// ══════════════════════════════════════════════
 //  INIT
 // ══════════════════════════════════════════════
-// Generate invitation QR with the real URL
-// Any phone camera / Google Lens / WhatsApp QR scanner will open this URL directly
-new QRCode(document.getElementById('invite-qr'), {
-  text: REGISTER_URL,
-  width: 200, height: 200,
-  colorDark: '#1A0800', colorLight: '#fff',
-  correctLevel: QRCode.CorrectLevel.M,  // M gives smaller QR, easier to scan for URLs
-});
-// Also show the URL below the QR so admin can verify
-setTimeout(() => {
-  const urlDisplay = document.getElementById('invite-url-display');
-  if (urlDisplay) urlDisplay.textContent = REGISTER_URL;
-}, 300);
-checkServer();
-loadAdminData();
 goStep(1);
 
-// ── AUTO-OPEN REGISTRATION FORM ──
-// If page is opened via the invitation QR (URL contains ?register=1)
-// automatically switch to Register tab and go to form — no extra scan needed
+// Check ?register=1 in URL — set flag for after login
 (function() {
   const params = new URLSearchParams(window.location.search);
   if (params.get('register') === '1') {
-    // Switch nav to Register mode
-    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-    const regBtn = document.querySelectorAll('.nav-btn')[1];
-    if (regBtn) regBtn.classList.add('active');
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    document.getElementById('page-register').classList.add('active');
-    // Skip scanner — go directly to form
-    goStep(2);
-    // Show a welcome banner
-    const banner = document.createElement('div');
-    banner.style.cssText = 'position:fixed;top:58px;left:0;right:0;z-index:150;background:linear-gradient(135deg,#2E7D32,#1B5E20);color:#fff;text-align:center;padding:10px 16px;font-size:13px;font-weight:600;box-shadow:0 2px 12px rgba(0,0,0,.3);';
-    banner.innerHTML = '🙏 Hare Krishna! Welcome — please fill the registration form below';
-    document.body.appendChild(banner);
-    setTimeout(() => banner.remove(), 4000);
+    sessionStorage.setItem('auto_register', '1');
   }
 })();
+
+// Attempt to restore existing session (e.g. after page refresh)
+checkAuthState();
 </script>
 </body>
 </html>
