@@ -126,12 +126,23 @@ def init_db():
             """)
             cur.execute("INSERT IGNORE INTO token_counter (id, current) VALUES (1, 0)")
 
-            # ── Safe migrations for existing deployments ──
-            try:
-                cur.execute("ALTER TABLE registrations ADD COLUMN IF NOT EXISTS registered_by INT NULL")
-                cur.execute("ALTER TABLE registrations ADD COLUMN IF NOT EXISTS free_entry TINYINT(1) NOT NULL DEFAULT 0")
-            except Exception:
-                pass  # columns already exist
+            # ── Safe migrations: add columns if not present ──
+            for col_sql, col_name in [
+                ("ALTER TABLE registrations ADD COLUMN registered_by INT NULL", "registered_by"),
+                ("ALTER TABLE registrations ADD COLUMN free_entry TINYINT(1) NOT NULL DEFAULT 0", "free_entry"),
+            ]:
+                try:
+                    cur.execute("""
+                        SELECT COUNT(*) AS cnt FROM INFORMATION_SCHEMA.COLUMNS
+                        WHERE TABLE_SCHEMA = DATABASE()
+                          AND TABLE_NAME = 'registrations'
+                          AND COLUMN_NAME = %s
+                    """, (col_name,))
+                    if cur.fetchone()['cnt'] == 0:
+                        cur.execute(col_sql)
+                        log.info(f'Migration: added column {col_name}')
+                except Exception as me:
+                    log.error(f'Migration error ({col_name}): {me}')
 
             # ── Seed default admin user (INSERT IGNORE = only once) ──
             admin_pw = os.environ.get('ADMIN_PASSWORD', 'admin123')
