@@ -149,7 +149,7 @@ def init_db():
             cur.execute("""
                 INSERT IGNORE INTO users (username, password_hash, name, mobile, role)
                 VALUES (%s, %s, %s, %s, 'admin')
-            """, ('admin', generate_password_hash(admin_pw), 'Administrator', '9999999999'))
+            """, ('admin', generate_password_hash(admin_pw), 'Administrator', os.environ.get('ADMIN_MOBILE', '0000000000')))
 
             conn.commit()
         log.info('Database tables ready.')
